@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Virtua Logs</title>
+</head>
+<body>
+
+	<table>
+     <thead>
+      <tr>
+        <th>Index</th>
+        <th>Virtua id</th>
+        <th>Sygnatura</th>
+        <th>Kod kreskowy</th>
+        <th>Autor</th>
+        <th>Tytół</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="vl : ${virtuaLogs}">
+        <td th:text="${{vl.getId()}}"/>
+        <td th:text="${{vl.getIdVirtua()}}"/>
+        <td th:text="${{vl.getSignature()}}"/>
+        <td th:text="${{vl.getBarcode()}}"/>
+        <td th:text="${{vl.getAuthor()}}"/>
+        <td th:text="${{vl.getTitle()}}"/>
+        <td th:text="${{vl.getStatus()}}"/>
+      </tr>
+    </tbody>
+  </table>
+
+</body>
+</html>
