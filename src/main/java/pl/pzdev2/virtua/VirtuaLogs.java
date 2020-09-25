@@ -18,13 +18,14 @@ import lombok.Setter;
 import lombok.ToString;
 
 
-@Getter
-@Setter
+
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
 @Builder
 @Entity
+@Getter
+@Setter
 public class VirtuaLogs {
 
 	@Id
