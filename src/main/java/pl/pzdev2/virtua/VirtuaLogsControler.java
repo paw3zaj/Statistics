@@ -21,5 +21,10 @@ public class VirtuaLogsControler {
 		
 		return "virtuaLogs";
 	}
+	
+//	@GetMapping("/findVirtuaLogsByBarcode")
+//	public List<VirtuaLogs> getByBarcode(@RequestParam String barcode) {
+//		return virtuaLogsService.getByBarcode(barcode);
+//	}
 
 }
