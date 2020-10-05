@@ -12,10 +12,14 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @Getter
 @Setter
@@ -43,16 +47,8 @@ public class Virtua {
 				+ ", barcode=" + barcode + ", author=" + author + ", title=" + title + "]";
 	}
 
-	public String getStatus() {
-		return status.getStatus();
-	}
-	
 	public Status getStat() {
 		return status;
-	}
-
-	public void setStatus(Status status) {
-		this.status = status;
 	}
 
 	@Override
