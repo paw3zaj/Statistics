@@ -1,4 +1,4 @@
-package pl.pzdev2.virtua;
+package pl.pzdev2.virtua.interfaces;
 
 import java.util.List;
 
@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
+
+import pl.pzdev2.virtua.Virtua;
 
 public interface VirtuaRepository extends JpaRepository<Virtua, Long> {
 	
