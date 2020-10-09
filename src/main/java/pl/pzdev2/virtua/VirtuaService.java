@@ -62,7 +62,7 @@ public class VirtuaService implements VirtuaHandler {
 		dbIdList = idSeparate(dataFromDb);
 		
 //		books entering or updating in the reading room
-		toBeUpdated(dataFromApi, dbIdList);
+		updateVirtua(dataFromApi, dbIdList);
 		
 //		books leaving from the reading room
 		
@@ -82,31 +82,15 @@ public class VirtuaService implements VirtuaHandler {
 				 .collect(Collectors.toList());
 	 }
 	 
-	 List<Virtua> toBeUpdated(List<Virtua>dataFromApi, List<Long>dbIdList) {
+	 List<Virtua> updateVirtua(List<Virtua>dataFromApi, List<Long>dbIdList) {
 		 return dataFromApi.stream()
 				 .filter(v -> dbIdList.contains(v.getIdVirtua()))
 				 .collect(Collectors.toList());
 	 }
 	 
-	 List<Virtua> toBeEntered(List<Virtua> dataFromApi, List<Long> dbIdList) {
-		 return dataFromApi.stream()
-				 .filter(v -> !dbIdList.contains(v.getIdVirtua()))
+	 List<Virtua> changeStatus(List<Virtua> virtuaList, List<Long> idList) {
+		 return virtuaList.stream()
+				 .filter(v -> !idList.contains(v.getIdVirtua()))
 				 .collect(Collectors.toList());
-	 }
-	 
-	 List<Virtua> toBeLeaved(List<Virtua> dataFromDb, List<Virtua> dataFromApi, List<Long> dbIdList) {
-		 
-		 for(Long i : dbIdList) {
-			 for(Virtua v : dataFromApi) {
-				 if(i == v.getIdVirtua()) {
-					 Virtua virtua = new Virtua();
-					 virtua.setIdVirtua(i);
-					 dataFromDb.remove(virtua);
-					 
-				 }
-			 }
-		 }
-		 
-		 return dataFromDb;
 	 }
 }

@@ -73,6 +73,63 @@ class VirtuaServiceTest {
 		assertThat(idList.get(2), equalTo(3L));
 	}
 	
+	@Test
+	void comparingTheIdOfTwoListsShouldRemoveSingleId() {
+		//given
+		Virtua virtua = vL1.get(0);
+		vL1.remove(0);
+		virtua.setSignature("wrong signature");
+		Virtua v = Virtua.builder().idVirtua(4L).signature("signature3").barcode("barcode3").build();
+		vL1.add(v);
+		vL1.add(virtua);
+		List<Long> idList = virtuaService.idSeparate(vL2);
+		
+		//when
+		List<Virtua> toUpdate = virtuaService.updateVirtua(vL1, idList);
+		
+		//then
+		assertThat(toUpdate, hasSize(3));
+		assertThat(toUpdate.get(2).getSignature(), equalTo("wrong signature"));
+		assertThat(toUpdate, not(contains(v)));
+		
+	}
+	
+	@Test
+	void comparingTheIdOfTwoListsShouldLeftSingleId() {
+		//given
+		Virtua virtua = vL1.get(0);
+		virtua.setSignature("wrong signature");
+		Virtua v = Virtua.builder().idVirtua(4L).signature("signature3").barcode("barcode3").build();
+		vL1.add(v);
+		vL1.add(virtua);
+		List<Long> idList = virtuaService.idSeparate(vL2);
+		
+		//when
+		List<Virtua> toEnter = virtuaService.changeStatus(vL1, idList);
+		
+		//then
+		assertThat(toEnter, hasSize(1));
+		assertThat(toEnter.get(0).getIdVirtua(), equalTo(4L));
+		assertThat(toEnter, contains(v));
+		
+	}
+	
+//	@Test
+//	void comparingTwoVirtuaListByIdShouldKeepItemsThatAreMissingInSecondList() {
+//		//given
+//		Virtua v1 = Virtua.builder().idVirtua(4L).signature("signature4").barcode("barcode4").build();
+//		Virtua v2 = Virtua.builder().idVirtua(5L).signature("signature5").barcode("barcode5").build();
+//		vL1.add(v1);
+//		vL2.add(v2);
+//		
+//		//when
+//		List<Virtua> toLeave = virtuaService.toBeLeaved(vL1, vL2);
+//		
+//		//then
+//		assertThat(toLeave, hasSize(2));
+//		
+//	}
+	
 	private List<Virtua> prepareVirtuaData() {
 		Virtua v1 = Virtua.builder().idVirtua(1L).signature("signature1").barcode("barcode1").build();
 		Virtua v2 = Virtua.builder().idVirtua(2L).signature("signature2").barcode("barcode2").build();
