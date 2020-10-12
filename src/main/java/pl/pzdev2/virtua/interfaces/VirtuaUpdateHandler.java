@@ -5,8 +5,8 @@ import java.util.Scanner;
 
 import pl.pzdev2.virtua.Virtua;
 
-public interface VirtuaHandler {
+public interface VirtuaUpdateHandler {
 
 	List<Virtua> convertDataFromApiToVirtua(Scanner input);
- 	void updateVirtuaDatabase(List<Virtua> dataFromApi, List<Virtua> dataFromDb, List<Long> dbIdList);
+ 	List<List<Virtua>> updateVirtuaDatabase(List<Virtua> dataFromApi, List<Virtua> dataFromDb);
 }

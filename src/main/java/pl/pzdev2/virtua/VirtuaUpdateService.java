@@ -1,6 +1,7 @@
 package pl.pzdev2.virtua;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
@@ -8,18 +9,18 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import pl.pzdev2.virtua.interfaces.VirtuaHandler;
 import pl.pzdev2.virtua.interfaces.VirtuaRepository;
+import pl.pzdev2.virtua.interfaces.VirtuaUpdateHandler;
 
-public class VirtuaService implements VirtuaHandler {
+public class VirtuaUpdateService implements VirtuaUpdateHandler {
 
 	private VirtuaRepository virtuaRepository;
 	private List<Virtua> dataFromApi;
 	private List<Virtua> dataFromDb;
 	
-	private static final Logger log = LoggerFactory.getLogger(VirtuaService.class);
+	private static final Logger log = LoggerFactory.getLogger(VirtuaUpdateService.class);
 	
-	public VirtuaService(VirtuaRepository virtuaRepository, List<Virtua> dataFromApi, List<Virtua> dataFromDb) {
+	public VirtuaUpdateService(VirtuaRepository virtuaRepository, List<Virtua> dataFromApi, List<Virtua> dataFromDb) {
 		this.virtuaRepository = virtuaRepository;
 		this.dataFromApi = dataFromApi;
 		this.dataFromDb = dataFromDb;
@@ -53,18 +54,31 @@ public class VirtuaService implements VirtuaHandler {
 	}
 
 	@Override
-	public void updateVirtuaDatabase(List<Virtua> dataFromApi, List<Virtua> dataFromDb, List<Long> dbIdList) {
+	public List<List<Virtua>> updateVirtuaDatabase(List<Virtua> dataFromApi, List<Virtua> dataFromDb) {
 		
-//		remove the same elements from both lists
+//		remove the same elements from both Virtua lists
 		removeTheSameElements(dataFromApi, dataFromDb);
 		
-//		separate the id from the database data
-		dbIdList = idSeparate(dataFromDb);
+//		separate the id from both Virtua lists
+		List<Long> dbIdList = idSeparate(dataFromDb);
+		List<Long> apiIdList = idSeparate(dataFromApi);
 		
-//		books entering or updating in the reading room
-		updateVirtua(dataFromApi, dbIdList);
+//		books updating in the reading room
+		List<Virtua> updateDbRows = updateVirtua(dataFromApi, dbIdList);
+		
+//		books entering to the reading room
+		List<Virtua> statusIn = changeStatus(dataFromApi, dbIdList);
+		statusIn.forEach(v -> {
+			v.setStatus(Status.IN);
+		});
 		
 //		books leaving from the reading room
+		List<Virtua> statusOut = changeStatus(dataFromDb, apiIdList);
+		statusOut.forEach(v -> {
+			v.setStatus(Status.OUT);
+		});
+		
+		return Arrays.asList(updateDbRows, statusIn, statusOut);
 		
 	}
 	
