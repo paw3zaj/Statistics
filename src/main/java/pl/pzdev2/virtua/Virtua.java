@@ -60,6 +60,7 @@ public class Virtua {
 		result = prime * result + ((idVirtua == null) ? 0 : idVirtua.hashCode());
 		result = prime * result + ((readingRoom == null) ? 0 : readingRoom.hashCode());
 		result = prime * result + ((signature == null) ? 0 : signature.hashCode());
+		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		return result;
 	}
@@ -98,6 +99,8 @@ public class Virtua {
 				return false;
 		} else if (!signature.equals(other.signature))
 			return false;
+		if (status != other.status)
+			return false;
 		if (title == null) {
 			if (other.title != null)
 				return false;
@@ -105,6 +108,4 @@ public class Virtua {
 			return false;
 		return true;
 	}
-
-
 }
