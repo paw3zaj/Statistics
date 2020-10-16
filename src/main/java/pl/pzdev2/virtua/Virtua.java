@@ -7,15 +7,16 @@ import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.Id;
 
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @Getter
 @Setter
@@ -31,8 +32,6 @@ public class Virtua {
 	private String author;
 	@Column(length=500)
 	private String title;
-	@CreatedDate
-	@JsonFormat(pattern="d MMMM yyyy")
     private LocalDate createdDate;
 	private Status status;
 	
@@ -41,18 +40,6 @@ public class Virtua {
 	public String toString() {
 		return "Virtua [readingRoom=" + readingRoom + ", idVirtua=" + idVirtua + ", signature=" + signature
 				+ ", barcode=" + barcode + ", author=" + author + ", title=" + title + "]";
-	}
-
-	public String getStatus() {
-		return status.getStatus();
-	}
-	
-	public Status getStat() {
-		return status;
-	}
-
-	public void setStatus(Status status) {
-		this.status = status;
 	}
 
 	@Override
@@ -64,6 +51,7 @@ public class Virtua {
 		result = prime * result + ((idVirtua == null) ? 0 : idVirtua.hashCode());
 		result = prime * result + ((readingRoom == null) ? 0 : readingRoom.hashCode());
 		result = prime * result + ((signature == null) ? 0 : signature.hashCode());
+		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		return result;
 	}
@@ -102,6 +90,8 @@ public class Virtua {
 				return false;
 		} else if (!signature.equals(other.signature))
 			return false;
+		if (status != other.status)
+			return false;
 		if (title == null) {
 			if (other.title != null)
 				return false;
@@ -109,6 +99,4 @@ public class Virtua {
 			return false;
 		return true;
 	}
-
-
 }

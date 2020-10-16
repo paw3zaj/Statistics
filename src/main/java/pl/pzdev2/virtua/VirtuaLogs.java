@@ -10,14 +10,22 @@ import javax.persistence.Id;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
+
+
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 @Builder
+@Entity
 @Getter
 @Setter
-@Entity
 public class VirtuaLogs {
 
 	@Id
@@ -34,14 +42,5 @@ public class VirtuaLogs {
 	@JsonFormat(pattern="d MMMM yyyy")
     private LocalDate createdDate;
     private Status status;
-    
-	@Override
-	public String toString() {
-		return "VirtuaLogs [id=" + id + ", readingRoom=" + readingRoom + ", idVirtua=" + idVirtua + ", signature="
-				+ signature + ", barcode=" + barcode + ", author=" + author + ", title=" + title + ", createdDate="
-				+ createdDate + ", status=" + status + "]";
-	}
-	
-    
     
 }
