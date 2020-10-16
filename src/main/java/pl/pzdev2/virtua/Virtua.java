@@ -7,10 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.Id;
 
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,8 +32,6 @@ public class Virtua {
 	private String author;
 	@Column(length=500)
 	private String title;
-	@CreatedDate
-	@JsonFormat(pattern="d MMMM yyyy")
     private LocalDate createdDate;
 	private Status status;
 	
@@ -45,10 +40,6 @@ public class Virtua {
 	public String toString() {
 		return "Virtua [readingRoom=" + readingRoom + ", idVirtua=" + idVirtua + ", signature=" + signature
 				+ ", barcode=" + barcode + ", author=" + author + ", title=" + title + "]";
-	}
-
-	public Status getStat() {
-		return status;
 	}
 
 	@Override

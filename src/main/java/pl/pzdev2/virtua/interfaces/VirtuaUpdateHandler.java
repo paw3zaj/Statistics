@@ -8,5 +8,6 @@ import pl.pzdev2.virtua.Virtua;
 public interface VirtuaUpdateHandler {
 
 	List<Virtua> convertDataFromApiToVirtua(Scanner input);
- 	List<List<Virtua>> updateVirtuaDatabase(List<Virtua> dataFromApi, List<Virtua> dataFromDb);
+ 	List<Virtua> updateVirtuaDatabase(List<Virtua> dataFromApi, List<Virtua> dataFromDb);
+ 	List<Virtua> saveChanges(List<Virtua> toUpdate);
 }

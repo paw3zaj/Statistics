@@ -2,8 +2,8 @@ package pl.pzdev2.virtua;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Mockito.mock;
+import static org.hamcrest.CoreMatchers.is;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,7 +27,7 @@ class VirtuaUpdateServiceTest {
         vL1 = prepareVirtuaData();
 		vL2 = prepareVirtuaData();
 		virtuaRepository = mock(VirtuaRepository.class);
-		virtuaUpdateService = new VirtuaUpdateService(virtuaRepository, vL1, vL2);
+		virtuaUpdateService = new VirtuaUpdateService(virtuaRepository);
     }
 
     @AfterEach
@@ -107,7 +107,7 @@ class VirtuaUpdateServiceTest {
 		List<Long> idList = virtuaUpdateService.idSeparate(vL2);
 		
 		//when
-		List<Virtua> toEnter = virtuaUpdateService.changeStatus(vL1, idList);
+		List<Virtua> toEnter = virtuaUpdateService.checkVirtuaState(vL1, idList);
 		
 		//then
 		assertThat(toEnter, hasSize(1));
@@ -118,8 +118,8 @@ class VirtuaUpdateServiceTest {
 	@Test
 	void updateVirtuaDatabaseTest() {
 		//given
-		Virtua v1 = Virtua.builder().idVirtua(4L).signature("signature4").barcode("barcode4").build();
-		Virtua v2 = Virtua.builder().idVirtua(5L).signature("signature5").barcode("barcode5").build();
+		Virtua v1 = Virtua.builder().idVirtua(4L).signature("signature4").barcode("barcode4").status(Status.IN).build();
+		Virtua v2 = Virtua.builder().idVirtua(5L).signature("signature5").barcode("barcode5").status(Status.IN).build();
 		Virtua virtua = vL1.get(0);
 		vL1.remove(0);
 		virtua.setSignature("wrong signature");
@@ -128,15 +128,15 @@ class VirtuaUpdateServiceTest {
 		vL2.add(v2);
 		
 		//when
-		List<List<Virtua>> toUpdate = virtuaUpdateService.updateVirtuaDatabase(vL1, vL2);
+		List<Virtua> toUpdate = virtuaUpdateService.updateVirtuaDatabase(vL1, vL2);
 		
 		//then
 		assertThat(vL1, hasSize(2));
 		assertThat(vL2, hasSize(2));
 		assertThat(toUpdate, hasSize(3));
-		assertThat(toUpdate.get(0).get(0).getSignature(), equalTo("wrong signature"));
-		assertThat(toUpdate.get(1).get(0).getStatus(), equalTo(Status.IN));
-		assertThat(toUpdate.get(2).get(0).getStatus(), equalTo(Status.OUT));
+		assertThat(toUpdate.get(0).getSignature(), equalTo("wrong signature"));
+		assertThat(toUpdate.get(1).getStatus(), equalTo(Status.IN));
+		assertThat(toUpdate.get(2).getStatus(), equalTo(Status.OUT));
 		
 	}
 	

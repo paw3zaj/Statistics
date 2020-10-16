@@ -1,29 +1,28 @@
 package pl.pzdev2.virtua;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
+import pl.pzdev2.utility.FormatDateTime;
 import pl.pzdev2.virtua.interfaces.VirtuaRepository;
 import pl.pzdev2.virtua.interfaces.VirtuaUpdateHandler;
 
+@Service
 public class VirtuaUpdateService implements VirtuaUpdateHandler {
 
 	private VirtuaRepository virtuaRepository;
-	private List<Virtua> dataFromApi;
-	private List<Virtua> dataFromDb;
 	
-	private static final Logger log = LoggerFactory.getLogger(VirtuaUpdateService.class);
+	private static final Logger LOG = LoggerFactory.getLogger(VirtuaUpdateService.class);
 	
-	public VirtuaUpdateService(VirtuaRepository virtuaRepository, List<Virtua> dataFromApi, List<Virtua> dataFromDb) {
+	public VirtuaUpdateService(VirtuaRepository virtuaRepository) {
 		this.virtuaRepository = virtuaRepository;
-		this.dataFromApi = dataFromApi;
-		this.dataFromDb = dataFromDb;
 	}
 
 	@Override
@@ -45,7 +44,7 @@ public class VirtuaUpdateService implements VirtuaUpdateHandler {
 	                		.status(Status.IN)
 	                		.build());
 	            } catch (Exception e) {
-	                log.info("Scanner wyrzucił‚ błąd idVirtua: {}", Long.parseLong(parts[1]));
+	                LOG.info("Scanner wyrzucił‚ błąd idVirtua: {}	{}", Long.parseLong(parts[1]), FormatDateTime.getDateTime());
 	                continue;
 	            }
 	        }
@@ -54,7 +53,7 @@ public class VirtuaUpdateService implements VirtuaUpdateHandler {
 	}
 
 	@Override
-	public List<List<Virtua>> updateVirtuaDatabase(List<Virtua> dataFromApi, List<Virtua> dataFromDb) {
+	public List<Virtua> updateVirtuaDatabase(List<Virtua> dataFromApi, List<Virtua> dataFromDb) {
 		
 //		remove the same elements from both Virtua lists
 		removeTheSameElements(dataFromApi, dataFromDb);
@@ -63,26 +62,44 @@ public class VirtuaUpdateService implements VirtuaUpdateHandler {
 		List<Long> dbIdList = idSeparate(dataFromDb);
 		List<Long> apiIdList = idSeparate(dataFromApi);
 		
-//		books updating in the reading room
-		List<Virtua> updateDbRows = updateVirtua(dataFromApi, dbIdList);
+//		virtua update
+		List<Virtua> toUpdate = updateVirtua(dataFromApi, dbIdList);
 		
-//		books entering to the reading room
-		List<Virtua> statusIn = changeStatus(dataFromApi, dbIdList);
-		statusIn.forEach(v -> {
-			v.setStatus(Status.IN);
+		for(Virtua virtua : toUpdate) {
+			for(Virtua dbV : dataFromDb) {
+				if(virtua.getIdVirtua().equals(dbV.getIdVirtua())) {
+					virtua.setCreatedDate(dbV.getCreatedDate());
+					break;
+				}
+			}
+		}
+		
+//		books entrance to the reading room
+		List<Virtua> entrance = checkVirtuaState(dataFromApi, dbIdList);
+		entrance.forEach(v -> {
+			v.setCreatedDate(LocalDate.now());
+			toUpdate.add(v);
 		});
 		
-//		books leaving from the reading room
-		List<Virtua> statusOut = changeStatus(dataFromDb, apiIdList);
-		statusOut.forEach(v -> {
-			v.setStatus(Status.OUT);
+//		books leave from the reading room
+		List<Virtua> leave = checkVirtuaState(dataFromDb, apiIdList);
+		leave.forEach(v -> {
+			if(v.getStatus() == Status.IN) {
+				v.setStatus(Status.OUT);
+				toUpdate.add(v);
+			}
+			
 		});
 		
-		return Arrays.asList(updateDbRows, statusIn, statusOut);
-		
+		return toUpdate;
 	}
 	
-	 void removeTheSameElements(List<Virtua> dataFromApi, List<Virtua> dataFromDb) {
+	 @Override
+	public List<Virtua> saveChanges(List<Virtua> toUpdate) {
+		return virtuaRepository.saveAll(toUpdate);
+	}
+
+	void removeTheSameElements(List<Virtua> dataFromApi, List<Virtua> dataFromDb) {
 
 		List<Virtua> temp = new ArrayList<>(dataFromApi);
 		
@@ -96,13 +113,14 @@ public class VirtuaUpdateService implements VirtuaUpdateHandler {
 				 .collect(Collectors.toList());
 	 }
 	 
-	 List<Virtua> updateVirtua(List<Virtua>dataFromApi, List<Long>dbIdList) {
+	 List<Virtua> updateVirtua(List<Virtua> dataFromApi, List<Long> dbIdList) {
+		 
 		 return dataFromApi.stream()
 				 .filter(v -> dbIdList.contains(v.getIdVirtua()))
 				 .collect(Collectors.toList());
 	 }
 	 
-	 List<Virtua> changeStatus(List<Virtua> virtuaList, List<Long> idList) {
+	 List<Virtua> checkVirtuaState(List<Virtua> virtuaList, List<Long> idList) {
 		 return virtuaList.stream()
 				 .filter(v -> !idList.contains(v.getIdVirtua()))
 				 .collect(Collectors.toList());
