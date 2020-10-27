@@ -15,5 +15,4 @@ public class ScannerData {
 
 	private String barcode;
 	private String createdDate;
-
 }
