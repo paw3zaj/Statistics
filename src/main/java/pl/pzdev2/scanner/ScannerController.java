@@ -1,75 +1,55 @@
 package pl.pzdev2.scanner;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pl.pzdev2.scan.Scan;
+import pl.pzdev2.scan.BadScan;
+import pl.pzdev2.scan.CorrectScan;
+import pl.pzdev2.scan.interfaces.ScanHandler;
 import pl.pzdev2.scanner.interfaces.ScannerHandler;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.lang.reflect.Type;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 @RestController
 public class ScannerController {
 
-    private ScannerHandler scannerHandler;
+    private final ScannerHandler scannerHandler;
+    private final ScanHandler scanHandler;
 
-    public ScannerController(ScannerHandler scannerHandler) {
+    private static final Logger LOG = LoggerFactory.getLogger(ScannerController.class);
+
+    public ScannerController(ScannerHandler scannerHandler, ScanHandler scanHandler) {
         this.scannerHandler = scannerHandler;
+        this.scanHandler = scanHandler;
     }
 
     @PostMapping("/receive-books-barcode")
-        public List<ScannerData> receiveBarcodeList(@RequestBody String json) throws IOException, InterruptedException {
+    public List<ScannerData> receiveScans(@RequestBody String json) {
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        List<ScannerData> listBarcode = objectMapper.readValue(json, new TypeReference<>() {
-        });
+        Runnable task = () -> {
+            try {
+                List<ScannerData> badBarcodes = scannerHandler.extractBadBarcodes(
+                        scannerHandler.barcodeMapping(json));
+                LOG.info("Liczba błędnych kodów kreskowych: {}",
+                        badBarcodes.size());
+                List<BadScan> badScans = scannerHandler.addAllToBadScans(badBarcodes);
+                List<CorrectScan> correctScans = scannerHandler.getCorrectScans();
 
-        scannerHandler.receiveScans(listBarcode);
-        return listBarcode;
+                scanHandler.saveBadScans(badScans);
+                scanHandler.saveCorrectScan(correctScans);
+
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+
+
+        };
+        new Thread(task).start();
+
+        return new ArrayList<>();
     }
-
-//    @RequestMapping
-//    public List<ScannerData> receiveBarcode() throws JsonParseException, JsonMappingException, IOException, InterruptedException {
-//
-//        System.out.println("1");
-//        try (var s = new ServerSocket(8189)) {
-//            System.out.println("2");
-//            try (Socket incoming = s.accept()) {
-//                System.out.println("3");
-//                String input = incoming.getInputStream().toString();
-//                InputStream inputStream = incoming.getInputStream();
-////                OutputStream outputStream = incoming.getOutputStream();
-//
-//                System.out.println("4");
-////                var in = new Scanner(inputStream, StandardCharsets.UTF_8);
-//                var mapper = new ObjectMapper();
-//                System.out.println("5");
-////                List<ScannerData> scannerData = mapper.readValue(input, new TypeReference<List<ScannerData>>(){});
-//                System.out.println("6");
-//                List<ScannerData> scannerData = new ArrayList<>();
-//                scannerData.add(new ScannerData("barcode1", "createDate1"));
-//                scannerData.add(new ScannerData("barcode2", "createDate2"));
-//                return scannerData;
-//            }
-//
-//        }
-//
-//    }
-
 }
