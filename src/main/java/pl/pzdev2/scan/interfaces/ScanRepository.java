@@ -1,9 +1,10 @@
-package pl.pzdev2.scan;
+package pl.pzdev2.scan.interfaces;
 
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import pl.pzdev2.scan.Scan;
 
 public interface ScanRepository extends JpaRepository<Scan, Long> {
 

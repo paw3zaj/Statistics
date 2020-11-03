@@ -6,11 +6,13 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
+import lombok.Getter;
 import lombok.ToString;
 import pl.pzdev2.virtua.Virtua;
 
 @Entity
 @ToString
+@Getter
 @DiscriminatorValue(value = "correct")
 public class CorrectScan extends Scan {
 	
@@ -24,14 +26,5 @@ public class CorrectScan extends Scan {
 		super(createdDate);
 		this.virtua = virtua;
 	}
-
-	public Virtua getVirtua() {
-		return virtua;
-	}
-
-	public void setVirtua(Virtua virtua) {
-		this.virtua = virtua;
-	}
-	
 }
 

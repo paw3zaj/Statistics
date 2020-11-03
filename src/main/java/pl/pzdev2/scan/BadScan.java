@@ -5,9 +5,11 @@ import java.time.LocalDateTime;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
+import lombok.Getter;
 import lombok.ToString;
 
 @Entity
+@Getter
 @ToString
 @DiscriminatorValue(value = "bad")
 public class BadScan extends Scan {
@@ -23,12 +25,4 @@ public class BadScan extends Scan {
 		this.barcode = barcode;
 	}
 
-	public String getBarcode() {
-		return barcode;
-	}
-
-	public void setBarcode(String barcode) {
-		this.barcode = barcode;
-	}
-	
 }
