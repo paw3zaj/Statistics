@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Statystyki</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/styles.css}"/>
+    <script type="text/javascript" th:src="@{/js/script.js}"></script>
+</head>
+<body>
+
+<button class="tablink" th:onclick="openPage('Month', this, 'green')" id="defaultOpen">Miesięczna/Roczna</button>
+<button class="tablink" th:onclick="openPage('Item', this, 'green')">Egzemplarzu</button>
+<button class="tablink" th:onclick="openPage('History', this, 'green')">Historia zmian w Virtua</button>
+
+<div id="Month" class="tabcontent">
+    <h3>Miesięczna</h3>
+
+    <p>Some news this fine day!</p>
+</div>
+
+<div id="Item" class="tabcontent">
+<p>Item</p>
+
+</div>
+
+<div id="History" class="tabcontent">
+    <div class="statisticslist" th:unless="${#lists.isEmpty(allVirtuaLogs)}">
+
+        <h2 th:text="#{title.list}">historia virtua</h2>
+
+        <table>
+            <thead>
+            <tr>
+                <th th:text="#{virtuaLogs.id}">index</th>
+                <th th:text="#{virtuaLogs.virtuaId}">virtua id</th>
+                <th th:text="#{virtuaLogs.signature}">sygnatura</th>
+                <th th:text="#{virtuaLogs.barcode}">kod kreskowy</th>
+                <th th:text="#{virtuaLogs.author}">autor</th>
+                <th th:text="#{virtuaLogs.title}">tytuł</th>
+                <th th:text="#{virtuaLogs.status}">status</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="vl : ${allVirtuaLogs}">
+                <td th:text="${{vl.getId()}}"/>
+                <td th:text="${{vl.getIdVirtua()}}"/>
+                <td th:text="${{vl.getSignature()}}"/>
+                <td th:text="${{vl.getBarcode()}}"/>
+                <td th:text="${{vl.getAuthor()}}"/>
+                <td th:text="${{vl.getTitle()}}"/>
+                <td th:text="${{vl.getStatus()}}"/>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    // Get the element with id="defaultOpen" and click on it
+    document.getElementById("defaultOpen").click();
+</script>
+</body>
