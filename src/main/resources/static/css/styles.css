@@ -15,9 +15,9 @@ body {
     height: 100%;
 }
 
-/*div.statisticslist {*/
+div.statisticslist {
 
-/*}*/
+}
 
 div.statisticslist > table {
     width: 100%;
@@ -44,16 +44,6 @@ div.statisticslist > table > tbody > tr > td > table {
     width: 100%;
     border-collapse: separate;
 }
-
-div.statisticslist > table > tbody > tr > td > table > tbody > tr> td {
-    background-color: #ddff77;
-    padding: 0px 5px;
-}
-
-div.statisticslist > table > tbody > tr > td > table > tbody > tr> td:last-child {
-    text-align: right;
-}
-
 
 .fieldError {
     border: 1px solid red;

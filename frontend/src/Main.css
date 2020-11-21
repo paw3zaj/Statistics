@@ -1,0 +1,68 @@
+div.statisticslist {
+
+}
+
+div.statisticslist > table {
+  width: 100%;
+  border: 1px solid #000;
+  border-collapse: collapse;
+}
+
+div.statisticslist > table > tbody > tr > td, div.statisticslist > table > thead > tr > th {
+  padding: 2px 10px;
+  border-left: 1px dotted #000000;
+  vertical-align: top;
+  line-height: 20px;
+}
+
+div.statisticslist > table > tbody > tr, div.statisticslist > table > thead > tr {
+  border-bottom: 1px solid #000000;
+}
+
+div.statisticslist > table th {
+  background-color: #99cc33;
+}
+
+div.statisticslist > table > tbody > tr > td > table {
+  width: 100%;
+  border-collapse: separate;
+}
+
+.fieldError {
+  border: 1px solid red;
+}
+
+ul.errorlist {
+  border: 1px dotted #333;
+  margin: 10px 10px 50px 10px;
+  padding: 10px;
+}
+
+ul.errorlist li {
+  list-style: none;
+  background-color: #f2d768;
+  padding: 5px;
+  margin: 3px 0px;
+}
+
+.tablink {
+  background-color: #99cc33;
+  color: white;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  font-size: 17px;
+  width: 33.3%;
+}
+
+.tablink:hover {
+  background-color: cornflowerblue;
+}
+
+.tabcontent {
+  display: none;
+  padding: 50px 0px;
+  height: 100%;
+} 
