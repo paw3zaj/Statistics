@@ -15,25 +15,65 @@
 <button class="tablink" th:onclick="openPage('History', this, 'green')">Historia zmian w Virtua</button>
 
 <div id="Month" class="tabcontent">
-    <h3>Miesięczna</h3>
-
-    <p>Some news this fine day!</p>
-</div>
-
-<div id="Item" class="tabcontent">
-<p>Item</p>
-
-</div>
-
-<div id="History" class="tabcontent">
     <div class="statisticslist" th:unless="${#lists.isEmpty(allVirtuaLogs)}">
 
-        <h2 th:text="#{title.list}">historia virtua</h2>
+        <h2 th:text="#{title.month}">statystyka miesięczna i roczna</h2>
+<!--        <form action="#" th:action="@{/seedstartermng}" th:object="${seedStarter}" method="get">-->
+<!--            wybierz rok i miesiąc-->
+<!--        </form>-->
+
+<!--        <h2 th:text="${}">suma skanów</h2>-->
+<!--        <h2 th:text="${}">suma błędów</h2>-->
 
         <table>
             <thead>
             <tr>
+                <th th:text="#{month.id}">index</th>
+                <th th:text="#{month.signature}">sygnatura</th>
+                <th th:text="#{month.barcode}">kod kreskowy</th>
+                <th th:text="#{month.author}">autor</th>
+                <th th:text="#{month.title}">tytuł</th>
+                <th th:text="#{month.count}">ilość wyporzyczeń</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="my : ${allVirtuaLogs}">
+                <td th:text="${my.getId()}"/>
+                <td th:text="${my.getSignature()}"/>
+                <td th:text="${my.getBarcode()}"/>
+                <td th:text="${my.getAuthor()}"/>
+                <td th:text="${my.getTitle()}"/>
+<!--                <td th:text="${{my.getQuantity()}}"/>-->
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div id="Item" class="tabcontent">
+    <div class="statisticslist" th:unless="${#lists.isEmpty(allVirtuaLogs)}">
+
+    <h2 th:text="#{title.item}">statystyka wybranego egzemplarza</h2>
+    <!--        <form action="#" th:action="@{/seedstartermng}" th:object="${seedStarter}" method="get">-->
+    <!--           <input> wyszukaj po kodzie kreskowym lub sygnaturze-->
+    <!--        </form>-->
+    <h2>Dane zasobu</h2>
+    <p>idVirtua</p>
+    <p>sygnatura</p>
+    <p>kod kreskowy</p>
+    <p>autor</p>
+    <p>tytuł</p>
+    <p>status</p>
+
+        <h2>Statystyki zasobu</h2>
+
+
+        <h2>Historia zasobu</h2>
+        <table>
+            <thead>
+            <tr>
                 <th th:text="#{virtuaLogs.id}">index</th>
+                <th th:text="#{virtuaLogs.date}">data zmiany</th>
                 <th th:text="#{virtuaLogs.virtuaId}">virtua id</th>
                 <th th:text="#{virtuaLogs.signature}">sygnatura</th>
                 <th th:text="#{virtuaLogs.barcode}">kod kreskowy</th>
@@ -44,13 +84,48 @@
             </thead>
             <tbody>
             <tr th:each="vl : ${allVirtuaLogs}">
-                <td th:text="${{vl.getId()}}"/>
-                <td th:text="${{vl.getIdVirtua()}}"/>
-                <td th:text="${{vl.getSignature()}}"/>
-                <td th:text="${{vl.getBarcode()}}"/>
-                <td th:text="${{vl.getAuthor()}}"/>
-                <td th:text="${{vl.getTitle()}}"/>
-                <td th:text="${{vl.getStatus()}}"/>
+                <td th:text="${vl.getId()}"/>
+                <td th:text="${vl.getCreatedDate()}"/>
+                <td th:text="${vl.getIdVirtua()}"/>
+                <td th:text="${vl.getSignature()}"/>
+                <td th:text="${vl.getBarcode()}"/>
+                <td th:text="${vl.getAuthor()}"/>
+                <td th:text="${vl.getTitle()}"/>
+                <td th:text="${vl.getStatus()}"/>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div id="History" class="tabcontent">
+    <div class="statisticslist" th:unless="${#lists.isEmpty(allVirtuaLogs)}">
+
+        <h2 th:text="#{title.history}">historia virtua</h2>
+
+        <table>
+            <thead>
+            <tr>
+                <th th:text="#{virtuaLogs.id}">index</th>
+                <th th:text="#{virtuaLogs.date}">data zmiany</th>
+                <th th:text="#{virtuaLogs.virtuaId}">virtua id</th>
+                <th th:text="#{virtuaLogs.signature}">sygnatura</th>
+                <th th:text="#{virtuaLogs.barcode}">kod kreskowy</th>
+                <th th:text="#{virtuaLogs.author}">autor</th>
+                <th th:text="#{virtuaLogs.title}">tytuł</th>
+                <th th:text="#{virtuaLogs.status}">status</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="vl : ${allVirtuaLogs}">
+                <td th:text="${vl.getId()}"/>
+                <td th:text="${vl.getCreatedDate()}"/>
+                <td th:text="${vl.getIdVirtua()}"/>
+                <td th:text="${vl.getSignature()}"/>
+                <td th:text="${vl.getBarcode()}"/>
+                <td th:text="${vl.getAuthor()}"/>
+                <td th:text="${vl.getTitle()}"/>
+                <td th:text="${vl.getStatus()}"/>
             </tr>
             </tbody>
         </table>
