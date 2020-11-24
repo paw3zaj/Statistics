@@ -10,4 +10,6 @@ public interface ScanHandler {
 
     void saveBadScans(List<BadScan> badScans);
     void saveCorrectScan(List<CorrectScan> correctScans);
+    int countBadScans(int year, int month);
+    int countAllScans(int year, int month);
 }

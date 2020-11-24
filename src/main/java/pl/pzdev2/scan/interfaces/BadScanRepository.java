@@ -7,8 +7,9 @@ import pl.pzdev2.scan.BadScan;
 
 public interface BadScanRepository extends JpaRepository<BadScan, Long> {
 	
-	@Query(value = "select count(id) from scanner_logs s"
-			+ " where s.scan_type = 'bad' and"
-			+ " year(s.created_date) = ?1 and month(s.created_date) = ?2", nativeQuery = true)
+	@Query(value = "select count(id) from scan s where s.scan_type = 'bad'"
+			+ " and year(s.created_date) = ?1 and month(s.created_date) = ?2"
+			, nativeQuery = true)
 	int countIncorrectScansInMonth(int year, int month);
+
 }
