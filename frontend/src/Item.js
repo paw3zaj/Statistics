@@ -75,6 +75,40 @@ const Item = ({
       inputRef.current.value="";
     };
 
+    const columnsC = React.useMemo(
+      () => [
+          {
+            Header: 'Virtua id',
+            accessor: 'idVirtua'
+          },
+          {
+            Header: 'Sygnatura',
+            accessor: 'signature'
+          },
+          {
+            Header: 'Kod kreskowy',
+            accessor: 'barcode'
+          },
+          {
+            Header: 'Autor',
+            accessor: 'author'
+          },
+          {
+            Header: 'Tytół',
+            accessor: 'title'
+          },
+          {
+            Header: 'Status',
+            accessor: 'status'
+          },
+          {
+            Header: 'Data dodania egzemplarza',
+            accessor: 'createdDate'
+          }
+        ],
+        []
+      )
+
     const columnsH = React.useMemo(
         () => [
             {
@@ -91,16 +125,16 @@ const Item = ({
             },
             {
               Header: 'Autor',
-              accessor: 'author'
+              accessor: 'data.author'
             },
             {
               Header: 'Tytół',
-              accessor: 'title'
+              accessor: 'title.title'
             },
             {
               Header: 'Status',
               accessor: 'status'
-            },
+            }
           ],
           []
         )
@@ -176,41 +210,14 @@ const Item = ({
         <input type="text" ref={inputRef} placeholder="wpisz kod kreskowy" />
         <button onClick={handleInput}>Generuj</button>
         <hr />
-        <h2>Dane aktualne</h2>
-        <table>
-          <tbody>
-  <tr>
-    <th>Virtua id:</th>
-    <td>{data.idVirtua}</td>
-  </tr>
-  <tr>
-    <th>Sygnatura:</th>
-    <td>{data.signature}</td>
-  </tr>
-  <tr>
-    <th>Kod kreskowy:</th>
-    <td>{data.barCode}</td>
-  </tr>
-  <tr>
-    <th>Autor:</th>
-    <td>{data.author}</td>
-  </tr>
-  <tr>
-    <th>Tytuł:</th>
-    <td>{data.title}</td>
-  </tr>
-  <tr>
-    <th>Status:</th>
-    <td>{data.status}</td>
-  </tr>
-  <tr>
-    <th>Data dodania egzemplarza:</th>
-    <td>{data.createdDate}</td>
-  </tr>
-  </tbody>
-</table>
+        <h2>Dane zasobu</h2>
+      
+      <Table
+      columns={columnsC}
+      data={hdata}
+      />
 
-<h2>Liczba wypożyczeń(...w budowie)</h2>
+<h2>Liczba wypożyczeń</h2>
 
       <Table
      columns={columnsB}
