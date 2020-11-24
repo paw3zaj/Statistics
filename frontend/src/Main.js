@@ -11,7 +11,6 @@ import History from "./History";
 import NotFound from "./NotFound"
 import { SERVER_URL } from './constant'
 import axios from 'axios'
-import './Main.css';
 
 const Main = () => {
 
@@ -20,7 +19,7 @@ const Main = () => {
     const [ddata, setDdata] = useState([])
     const [hddata, setHddata] = useState([])
     const [year, setYear] = useState('2020')
-    const [month, setMonth] = useState('1')
+    const [month, setMonth] = useState('0')
     const [remove, setRemove] = useState(false)
 
     const url = SERVER_URL + '/allVirtuaLogs';
@@ -60,7 +59,6 @@ const Main = () => {
                     />} />
                     <Route path="/history" component={() => <History
                     data={hdata}
-                    setData={setHdata}
                     />} />
                     <Route component={NotFound} />
                     </Switch>
@@ -71,3 +69,5 @@ const Main = () => {
 }
 
 export default Main;
+
+   // setData={setHdata}

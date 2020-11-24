@@ -1,36 +1,87 @@
-import React from "react";
+import React from "react"
+import './history.css'
+import { useTable } from 'react-table'
 
-const History = () => {
+function Table({ columns, data }) {
+    // Use the state and functions returned from useTable to build your UI
+    const {
+      getTableProps,
+      getTableBodyProps,
+      headerGroups,
+      rows,
+      prepareRow,
+    } = useTable({
+      columns,
+      data,
+    })
+  
+    // Render the UI for your table
+    return (
+      <table {...getTableProps()}>
+        <thead>
+          {headerGroups.map(headerGroup => (
+            <tr {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map(column => (
+                <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+              ))}
+            </tr>
+          ))}
+        </thead>
+        <tbody {...getTableBodyProps()}>
+          {rows.map((row, i) => {
+            prepareRow(row)
+            return (
+              <tr {...row.getRowProps()}>
+                {row.cells.map(cell => {
+                  return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                })}
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
+    )
+  }
+  
+
+const History = ({data}) => {
+
+    const columns = React.useMemo(
+        () => [
+          {
+            Header: 'Data zmiany',
+            accessor: 'createdDate'
+          },
+          {
+            Header: 'Virtua id',
+            accessor: 'idVirtua'
+          },
+          {
+            Header: 'Sygnatura',
+            accessor: 'signature'
+          },
+          {
+            Header: 'Kod kreskowy',
+            accessor: 'barcode'
+          },
+          {
+            Header: 'Autor',
+            accessor: 'author'
+          },
+          {
+            Header: 'Tytół',
+            accessor: 'title'
+          },
+          {
+            Header: 'Status',
+            accessor: 'status'
+          },
+        ],
+        []
+      )
 
     return(
-        <h1>History</h1>
-        // <p>history</p>
-        // <table>
-        //     <thead>
-        //     <tr>
-        //         <th th:text="#{virtuaLogs.id}">index</th>
-        //         <th th:text="#{virtuaLogs.date}">data zmiany</th>
-        //         <th th:text="#{virtuaLogs.virtuaId}">virtua id</th>
-        //         <th th:text="#{virtuaLogs.signature}">sygnatura</th>
-        //         <th th:text="#{virtuaLogs.barcode}">kod kreskowy</th>
-        //         <th th:text="#{virtuaLogs.author}">autor</th>
-        //         <th th:text="#{virtuaLogs.title}">tytuł</th>
-        //         <th th:text="#{virtuaLogs.status}">status</th>
-        //     </tr>
-        //     </thead>
-        //     <tbody>
-        //     <tr th:each="vl : ${allVirtuaLogs}">
-        //         <td th:text="${vl.getId()}"/>
-        //         <td th:text="${vl.getCreatedDate()}"/>
-        //         <td th:text="${vl.getIdVirtua()}"/>
-        //         <td th:text="${vl.getSignature()}"/>
-        //         <td th:text="${vl.getBarcode()}"/>
-        //         <td th:text="${vl.getAuthor()}"/>
-        //         <td th:text="${vl.getTitle()}"/>
-        //         <td th:text="${vl.getStatus()}"/>
-        //     </tr>
-        //     </tbody>
-        // </table>
+        <Table columns={columns} data={data} />
     );
 }
 
