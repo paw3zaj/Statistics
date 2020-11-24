@@ -35,7 +35,7 @@ const Main = () => {
     <HashRouter>
             <div>
                 <ul className="header">
-                    <li><NavLink exact to="/">Miesięczna/Roczna</NavLink></li>
+                    <li><NavLink exact to="/">Roczna/Miesięczna</NavLink></li>
                     <li><NavLink to="/item">Egzemplarzu</NavLink></li>
                     <li><NavLink to="/history">Historia zmian w Virtua</NavLink></li>
                 </ul>
