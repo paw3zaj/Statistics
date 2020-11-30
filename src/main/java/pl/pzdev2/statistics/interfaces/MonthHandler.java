@@ -6,7 +6,7 @@ import pl.pzdev2.virtua.Virtua;
 import java.util.List;
 import java.util.Map;
 
-public interface StatisticsHandler {
+public interface MonthHandler {
     int countBadScans(int year, int month);
     int countAllScans(int year, int month);
     List<CorrectScan> getAllByMonth(int year, int month);

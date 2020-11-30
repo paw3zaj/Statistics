@@ -22,10 +22,9 @@ import java.util.Map;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
 @ExtendWith(MockitoExtension.class)
-class StatisticsServiceTest {
+class MonthServiceTest {
 
     private Virtua v1;
     private Virtua v2;
@@ -33,7 +32,7 @@ class StatisticsServiceTest {
     private List<CorrectScan> scans;
 
     @InjectMocks
-    private StatisticsService statisticsService;
+    private MonthService monthService;
     @Mock
     private ScanRepository scanRepository;
     @Mock
@@ -55,7 +54,7 @@ class StatisticsServiceTest {
     void mapAfterGroupingShouldHaveThreeElements() {
         //given
         //when
-        Map<Virtua, Integer> groupedScans = statisticsService.groupingOfScans(scans);
+        Map<Virtua, Integer> groupedScans = monthService.groupingOfScans(scans);
 
         //then
         assertThat(groupedScans.size(), equalTo(3));
@@ -67,11 +66,11 @@ class StatisticsServiceTest {
     Collection<DynamicTest> mapShouldBeSortedFromTheHighestValueToTheLowest() {
         //given
         Collection<DynamicTest> dynamicTests = new ArrayList<>();
-        Map<Virtua, Integer> groupedScans = statisticsService.groupingOfScans(scans);
+        Map<Virtua, Integer> groupedScans = monthService.groupingOfScans(scans);
         Integer cache = 5;
 
         //when
-        Map<Virtua, Integer> sortedScans = statisticsService.sortScans(groupedScans);
+        Map<Virtua, Integer> sortedScans = monthService.sortScans(groupedScans);
 
         //then
         for(Integer v : sortedScans.values()) {

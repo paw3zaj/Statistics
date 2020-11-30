@@ -5,19 +5,19 @@ import pl.pzdev2.scan.CorrectScan;
 import pl.pzdev2.scan.interfaces.BadScanRepository;
 import pl.pzdev2.scan.interfaces.CorrectScanRepository;
 import pl.pzdev2.scan.interfaces.ScanRepository;
-import pl.pzdev2.statistics.interfaces.StatisticsHandler;
+import pl.pzdev2.statistics.interfaces.MonthHandler;
 import pl.pzdev2.virtua.Virtua;
 
 import java.util.*;
 
 @Service
-public class StatisticsService implements StatisticsHandler {
+public class MonthService implements MonthHandler {
 
     private ScanRepository scanRepository;
     private BadScanRepository badScanRepository;
     private CorrectScanRepository correctScanRepository;
 
-    public StatisticsService(ScanRepository scanRepository, BadScanRepository badScanRepository, CorrectScanRepository correctScanRepository) {
+    public MonthService(ScanRepository scanRepository, BadScanRepository badScanRepository, CorrectScanRepository correctScanRepository) {
         this.scanRepository = scanRepository;
         this.badScanRepository = badScanRepository;
         this.correctScanRepository = correctScanRepository;
