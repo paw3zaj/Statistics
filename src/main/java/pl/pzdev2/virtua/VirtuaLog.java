@@ -26,7 +26,7 @@ import lombok.ToString;
 @Entity
 @Getter
 @Setter
-public class VirtuaLogs {
+public class VirtuaLog {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
