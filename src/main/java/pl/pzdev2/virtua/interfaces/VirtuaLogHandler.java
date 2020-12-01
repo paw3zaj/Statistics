@@ -7,5 +7,4 @@ import java.util.List;
 public interface VirtuaLogHandler {
 
     List<VirtuaLog> findAll();
-    List<VirtuaLog> findByBarcode(String barcode);
 }

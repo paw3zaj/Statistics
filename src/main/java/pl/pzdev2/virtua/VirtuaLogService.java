@@ -20,8 +20,4 @@ public class VirtuaLogService implements VirtuaLogHandler {
         return virtuaLogRepository.findAll();
     }
 
-    @Override
-    public List<VirtuaLog> findByBarcode(String barcode) {
-        return virtuaLogRepository.findByBarcode(barcode);
-    }
 }

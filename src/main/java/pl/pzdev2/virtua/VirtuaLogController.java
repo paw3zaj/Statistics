@@ -20,8 +20,4 @@ public class VirtuaLogController {
         return virtuaLogHandler.findAll();
     }
 
-    @GetMapping("/getVirtuaLogsByBarcode")
-    public List<VirtuaLog> getByBarcode(String barcode) {
-        return virtuaLogHandler.findByBarcode(barcode);
-    }
 }
