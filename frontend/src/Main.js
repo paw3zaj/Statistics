@@ -21,8 +21,10 @@ const Main = () => {
     const [year, setYear] = useState('2020')
     const [month, setMonth] = useState('0')
     const [remove, setRemove] = useState(false)
+    const [all, setAll] = useState()
+    const [error, setError] = useState()
 
-    const url = SERVER_URL + '/allVirtuaLogs';
+    const url = SERVER_URL + '/getAllVirtuaLogs';
 
     useEffect(() => {
           (async function fetchData() {
@@ -50,6 +52,10 @@ const Main = () => {
                     setMonth={setMonth}
                     remove={remove}
                     setRemove={setRemove}
+                    all={all}
+                    setAll={setAll}
+                    error={error}
+                    setError={setError}
                     />} />
                     <Route path="/item" component={() => <Item
                     data={ddata}
@@ -69,5 +75,3 @@ const Main = () => {
 }
 
 export default Main;
-
-   // setData={setHdata}
