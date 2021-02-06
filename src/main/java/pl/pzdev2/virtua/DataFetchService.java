@@ -2,6 +2,8 @@ package pl.pzdev2.virtua;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.util.List;
 import java.util.Scanner;
@@ -19,37 +21,74 @@ public class DataFetchService implements DataFetch {
 	
 	private VirtuaRepository virtuaRepository;
 	
-	private static final Logger LOG = LoggerFactory.getLogger(VirtuaUpdateService.class);
-	
+	private static final Logger LOG = LoggerFactory.getLogger(DataFetchService.class);
+
 	public DataFetchService(VirtuaRepository virtuaRepository) {
 	this.virtuaRepository = virtuaRepository;
 	}
 
 	@Override
-	public Scanner getDataFromApi(String path) throws IOException {
+	public Scanner getDataFromApi(String path) {
 		
 //		Pass the desired URL as an object.
-        URL url = new URL(path);
+		URL url = null;
+		try {
+			url = new URL(path);
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+			LOG.info("Error!!! Throws an error when passing url to object", FormatDateTime.getDateTime());
+		}
 
 //		We will be able to harness the properties of the HttpURLConnection class to validate features.
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		HttpURLConnection conn = null;
+		try {
+			conn = (HttpURLConnection) url.openConnection();
+		} catch (IOException e) {
+			e.printStackTrace();
+			LOG.info("Error!!! A connection can't be establish", FormatDateTime.getDateTime());
+		}
 
 //		Set the request type.
-        conn.setRequestMethod("GET");
+		try {
+			conn.setRequestMethod("GET");
+		} catch (ProtocolException e) {
+			e.printStackTrace();
+			LOG.info("Error!!! Can't set the request type", FormatDateTime.getDateTime());
+		}
 
 //		Open a connection stream to the corresponding API.
-        conn.connect();
+		try {
+			conn.connect();
+		} catch (IOException e) {
+			e.printStackTrace();
+			LOG.info("Error!!! A connection can't be opened", FormatDateTime.getDateTime());
+		}
 
 //		Get the corresponding response code.
-        int responsecode = conn.getResponseCode();
+		int responsecode = 0;
+		try {
+			responsecode = conn.getResponseCode();
+		} catch (IOException e) {
+			e.printStackTrace();
+			LOG.info("Error!!! Can't Get the corresponding response code.", FormatDateTime.getDateTime());
+		}
 
 //		Perform a check.
         if (responsecode != 200) {
         	LOG.info("Błąd połączenia z API Virtua!!!	{}\nHttpResponseCode: " + responsecode, FormatDateTime.getDateTime());
             throw new RuntimeException("HttpResponseCode: " + responsecode);
         }
-        
-        return new Scanner(url.openStream());
+
+
+		Scanner input = null;
+		try {
+			input = new Scanner(url.openStream());
+		} catch (IOException e) {
+			e.printStackTrace();
+			LOG.info("Error!!! Data can't be scanned from api", FormatDateTime.getDateTime());
+		}
+
+		return input;
 	}
 
 	@Override
