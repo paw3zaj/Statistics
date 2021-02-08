@@ -17,28 +17,51 @@ const Item = ({
       inputRef.current.focus();
     }, []);
 
+    async function dataFetch() {
+
+        console.log('początek');
+
+        const barcode = inputRef.current.value;
+
+        console.log(barcode);
+
+        await axios.get(url + '/getVirtuaByBarcode?barcode='+barcode)
+            .then(response => {setData(response.data)});
+        await axios.get(`${url}/getVirtuaLogsByBarcode?barcode=104618751000`) //${inputRef.current.value}`)
+            .then(response => {setHdata(response.data)});
+        console.log('przed');
+        console.log(data.title);
+        console.log('po');
+    }
+
     const handleInput = () => {
 
-      (async function fetchData() {
-        const response = await axios.get(url + '/findVirtuaByBarcode?barcode='+inputRef.current.value);
-        setData(response.data);
-      })();
-      // if fetchData == null then fetch by sygnature
 
-      (async function fetchHdata() {
-        const response = await axios.get(url + '/findVirtuaLogsByBarcode?barcode='+inputRef.current.value);
-        setHdata(response.data);
-      })();
+        console.log(inputRef.current.value);
+
+      // (async function fetchData() {
+      //   const response = await axios.get(url + '/getVirtuaByBarcode?barcode='+inputRef.current.value);
+      //   setData(response.data);
+      // })();
+      // // if fetchData == null then fetch by sygnature
+      //
+      // (async function fetchHdata() {
+      //   const response = await axios.get(url + '/getVirtuaLogsByBarcode?barcode='+inputRef.current.value);
+      //   setHdata(response.data);
+      //
+      // })();
 
       inputRef.current.focus();
       inputRef.current.value="";
+
+      return dataFetch();
     };
 
     const columnsC = React.useMemo(
       () => [
           {
             Header: 'Virtua id',
-            accessor: 'idVirtua'
+            accessor: 'data.signature'
           },
           {
             Header: 'Sygnatura',
@@ -173,7 +196,7 @@ const Item = ({
       
       <Table
       columns={columnsC}
-      data={hdata}
+      data={data}
       />
 
 <h2>Liczba wypożyczeń</h2>
