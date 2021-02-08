@@ -7,6 +7,6 @@ import pl.pzdev2.scan.Scan;
 public interface ScanRepository extends JpaRepository<Scan, Long> {
 
 	@Query(value = "select count(id) from scan s"
-			+ " where year(s.created_date) = ?1 and month(s.created_date) = ?2", nativeQuery = true)
+			+ " where s.year = ?1 and s.month = ?2", nativeQuery = true)
 	int countAllScansInMonth(int year, int month);
 }

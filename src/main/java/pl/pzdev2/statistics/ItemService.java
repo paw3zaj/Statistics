@@ -31,8 +31,8 @@ public class ItemService implements ItemHandler {
     }
 
     @Override
-    public int countPerMonth(String barcode, int year, int month) {
-        return correctScanRepository.countMonthlyBookBorrowing(barcode, year, month);
+    public int countPerMonth(int year, int month, String barcode) {
+        return correctScanRepository.countMonthlyBookBorrowing(year, month, barcode);
     }
 
     @Override

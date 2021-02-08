@@ -8,6 +8,6 @@ import java.util.List;
 public interface ItemHandler {
 
     Virtua findVirtuaByBarcode(String barcode);
-    int countPerMonth(String barcode, int year, int month);
+    int countPerMonth(int year, int month, String barcode);
     List<VirtuaLog> findVirtuaLogsByBarcode(String barcode);
 }
