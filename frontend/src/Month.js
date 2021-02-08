@@ -46,18 +46,6 @@ const Month = ({
 
     const columns = React.useMemo(
         () => [
-            // {
-            //   Header: 'Index',
-            //   accessor: 'createdDate',
-            // },
-            {
-                Header: 'Sygnatura',
-                accessor: 'signature'
-            },
-            {
-                Header: 'Kod kreskowy',
-                accessor: 'barcode'
-            },
             {
                 Header: 'Autor',
                 accessor: 'author',

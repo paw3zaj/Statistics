@@ -5,6 +5,7 @@ import pl.pzdev2.scan.CorrectScan;
 import pl.pzdev2.scan.interfaces.BadScanRepository;
 import pl.pzdev2.scan.interfaces.CorrectScanRepository;
 import pl.pzdev2.scan.interfaces.ScanRepository;
+import pl.pzdev2.statistics.interfaces.Month;
 import pl.pzdev2.statistics.interfaces.MonthHandler;
 import pl.pzdev2.virtua.Virtua;
 
@@ -62,5 +63,14 @@ public class MonthService implements MonthHandler {
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                 .forEachOrdered(s -> reverseSortedMap.put(s.getKey(), s.getValue()));
         return reverseSortedMap;
+    }
+
+    @Override
+    public List<Month> countTotal(int year, int month) {
+
+        System.out.println("start service");
+        List<Month> list = correctScanRepository.countTotalScansInMonth(year, month);
+        System.out.println("end service");
+        return list;
     }
 }
