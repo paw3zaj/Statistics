@@ -47,6 +47,10 @@ const Month = ({
     const columns = React.useMemo(
         () => [
             {
+                Header: 'Index',
+                accessor: 'id',
+            },
+            {
                 Header: 'Autor',
                 accessor: 'author',
             },
