@@ -1,7 +1,6 @@
 package pl.pzdev2.statistics;
 
 import org.springframework.stereotype.Service;
-import pl.pzdev2.scan.Scan;
 import pl.pzdev2.scan.interfaces.ScanRepository;
 import pl.pzdev2.statistics.interfaces.Month;
 import pl.pzdev2.statistics.interfaces.MonthHandler;
@@ -18,27 +17,26 @@ public class MonthService implements MonthHandler {
     }
 
     @Override
-    public int countBadScans(int year, int month) {
-        return scanRepository.countIncorrectScansInMonth(year, month);
-    }
-
-    @Override
     public int countAllScans(int year, int month) {
-        return scanRepository.countAllScansInMonth(year, month);
+        if(month == 0) {
+            return scanRepository.countAllScansForTheYear(year);
+        }
+        return scanRepository.countAllScansForTheMonth(year, month);
     }
 
     @Override
-    public List<Scan> getAllByMonth(int year, int month) {
-        return scanRepository.findAllCorrectScansInMonth(year, month);
+    public int countAllIncorrectScans(int year, int month) {
+        if(month == 0) {
+            return scanRepository.countAllIncorrectScansForTheYear(year);
+        }
+        return scanRepository.countAllIncorrectScansForTheMonth(year, month);
     }
 
     @Override
-    public List<Scan> getAllByYear(int year) {
-        return scanRepository.findAllCorrectScansInYear(year);
-    }
-
-    @Override
-    public List<Month> countTotal(int year, int month) {
-        return scanRepository.countTotalScansInMonth(year, month);
+    public List<Month> countTotalScans(int year, int month) {
+        if(month == 0) {
+            return scanRepository.countTotalScansForTheYear(year);
+        }
+        return scanRepository.countTotalScansForTheMonth(year, month);
     }
 }

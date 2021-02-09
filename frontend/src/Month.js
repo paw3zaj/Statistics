@@ -18,30 +18,17 @@ const Month = ({
 
     const url = SERVER_URL;
 
-    async function fetchDataInMonth() {
+    async function fetchData() {
         await axios.get(`${url}/countAllScans?year=${year}&month=${month}`)
             .then(response => {setAll(response.data)});
-        await axios.get(`${url}/countBadScans?year=${year}&month=${month}`)
+        await axios.get(`${url}/countAllBadScans?year=${year}&month=${month}`)
             .then(response => {setError(response.data)});
-        await axios.get(`${url}/getAllInMonth?year=${year}&month=${month}`)
+        await axios.get(`${url}/countTotal?year=${year}&month=${month}`)
             .then(response => {setData(response.data)});
     }
 
-    async function fetchDataInYear() {
-        await axios.get(`${url}/countAllScans?year=${year}&month=1`)
-            .then(response => {setAll(response.data)});
-        await axios.get(`${url}/countBadScans?year=${year}&month=1`)
-            .then(response => {setError(response.data)});
-        await axios.get(`${url}/getAllInYear?year=${year}`)
-            .then(response => {setData(response.data)});
-    }
-
-    const handleDownload = (e) => {
-        if(month === '0') {
-             return fetchDataInYear()
-        } else {
-             return fetchDataInMonth()
-        }
+    const handleDownload = () => {
+        return fetchData();
     }
 
     const columns = React.useMemo(

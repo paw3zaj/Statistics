@@ -18,24 +18,18 @@ public class MonthController {
         this.monthHandler = monthHandler;
     }
 
-    @GetMapping("/countBadScans")
-    int countIncorrectScansInMonth(int year, int month) {
-        return monthHandler.countBadScans(year, month);
+    @GetMapping("/countAllBadScans")
+    int countAllBadScans(int year, int month) {
+        return monthHandler.countAllIncorrectScans(year, month);
     }
 
     @GetMapping("/countAllScans")
-    int countAllScansInMonth(int year, int month) {
+    int countAllScans(int year, int month) {
         return monthHandler.countAllScans(year, month);
     }
 
-    @GetMapping("/getAllInMonth")
-    List<Month> getAll(int year, int month) {
-
-        return monthHandler.countTotal(year, month);
-    }
-
-    @GetMapping("/getAllInYear")
-    List<Month> getAll(int year) {
-        return null;
+    @GetMapping("/countTotal")
+    List<Month> countTotal(int year, int month) {
+        return monthHandler.countTotalScans(year, month);
     }
 }
