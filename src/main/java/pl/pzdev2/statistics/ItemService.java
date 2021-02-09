@@ -1,7 +1,7 @@
 package pl.pzdev2.statistics;
 
 import org.springframework.stereotype.Service;
-import pl.pzdev2.scan.interfaces.CorrectScanRepository;
+import pl.pzdev2.scan.interfaces.ScanRepository;
 import pl.pzdev2.statistics.interfaces.ItemHandler;
 import pl.pzdev2.virtua.Virtua;
 import pl.pzdev2.virtua.VirtuaLog;
@@ -14,14 +14,14 @@ import java.util.List;
 public class ItemService implements ItemHandler {
 
     private VirtuaRepository virtuaRepository;
-    private CorrectScanRepository correctScanRepository;
+    private ScanRepository scanRepository;
     private VirtuaLogRepository virtuaLogRepository;
 
     public ItemService(VirtuaRepository virtuaRepository,
-                       CorrectScanRepository correctScanRepository,
+                       ScanRepository scanRepository,
                        VirtuaLogRepository virtuaLogRepository) {
         this.virtuaRepository = virtuaRepository;
-        this.correctScanRepository = correctScanRepository;
+        this.scanRepository = scanRepository;
         this.virtuaLogRepository = virtuaLogRepository;
     }
 
@@ -32,7 +32,7 @@ public class ItemService implements ItemHandler {
 
     @Override
     public int countPerMonth(int year, int month, String barcode) {
-        return correctScanRepository.countMonthlyBookBorrowing(year, month, barcode);
+        return scanRepository.countMonthlyBookBorrowing(year, month, barcode);
     }
 
     @Override

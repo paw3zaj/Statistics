@@ -6,8 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import pl.pzdev2.scan.BadScan;
-import pl.pzdev2.scan.CorrectScan;
+import pl.pzdev2.scan.Scan;
 import pl.pzdev2.scan.interfaces.ScanHandler;
 import pl.pzdev2.scanner.interfaces.ScannerHandler;
 
@@ -32,15 +31,19 @@ public class ScannerController {
 
         Runnable task = () -> {
             try {
-                List<ScannerData> badBarcodes = scannerHandler.extractBadBarcodes(
-                        scannerHandler.barcodeMapping(json));
-                LOG.info("Liczba błędnych kodów kreskowych: {}",
-                        badBarcodes.size());
-                List<BadScan> badScans = scannerHandler.addAllToBadScans(badBarcodes);
-                List<CorrectScan> correctScans = scannerHandler.getCorrectScans();
+                List<ScannerData> barcodeList = scannerHandler.barcodeMapping(json);
 
-                scanHandler.saveBadScans(badScans);
-                scanHandler.saveCorrectScan(correctScans);
+                LOG.info("Liczba skanów: {}",
+                        barcodeList.size());
+
+                scannerHandler.makeScanList(barcodeList);
+
+                scannerHandler.getScans().forEach(System.out::println);
+
+                List<Scan> scans = scannerHandler.getScans();
+
+                System.out.println("Przed save");
+                scanHandler.saveScans(scans);
 
             } catch (JsonProcessingException e) {
                 e.printStackTrace();

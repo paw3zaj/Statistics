@@ -6,8 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import pl.pzdev2.scan.BadScan;
-import pl.pzdev2.scan.CorrectScan;
+import pl.pzdev2.scan.Scan;
 import pl.pzdev2.scanner.interfaces.ScannerHandler;
 import pl.pzdev2.utility.FormatDateTime;
 import pl.pzdev2.virtua.Virtua;
@@ -21,7 +20,10 @@ import java.util.stream.Collectors;
 public class ScannerService implements ScannerHandler {
 
     private VirtuaRepository virtuaRepository;
-    private List<CorrectScan> correctScans = new ArrayList<>();
+    private List<Scan> scans;// = new ArrayList<>();
+
+    private static final String CORRECT = "correct";
+    private static final String BAD = "bad";
 
     private static final Logger LOG = LoggerFactory.getLogger(ScannerService.class);
 
@@ -30,27 +32,15 @@ public class ScannerService implements ScannerHandler {
     }
 
     @Override
-    public List<CorrectScan> getCorrectScans() {
-        return correctScans;
+    public List<Scan> getScans() {
+        return scans;
     }
 
-    void addToCorrectScans(CorrectScan correctScan) {
-        correctScans.add(correctScan);
+    void addToScans(Scan scan) {
+        scans.add(scan);
     }
 
-    @Override
-    public List<ScannerData> extractBadBarcodes(List<ScannerData> barcodeList) {
-        return barcodeList.stream()
-                .filter(v -> {
-                    Virtua virtua = virtuaRepository.findByBarcode(v.getBarcode());
-                    if(virtua != null) {
-                        addToCorrectScans(new CorrectScan(FormatDateTime.convertToLocalDateTime(v.getCreatedDate()), virtua));
-                        return false;
-                    }
-                    return true;
-                })
-                .collect(Collectors.toList());
-    }
+
 
     @Override
     public List<ScannerData> barcodeMapping(String json) throws JsonProcessingException {
@@ -62,11 +52,40 @@ public class ScannerService implements ScannerHandler {
     }
 
     @Override
-    public List<BadScan> addAllToBadScans(List<ScannerData> badBarcodes) {
-        var badScans = new ArrayList<BadScan>();
-        for(ScannerData b : badBarcodes) {
-            badScans.add(new BadScan(FormatDateTime.convertToLocalDateTime(b.getCreatedDate()), b.getBarcode()));
-        }
-        return badScans;
+    public void makeScanList(List<ScannerData> barcodeList) {
+        scans = new ArrayList<>();
+
+        barcodeList.forEach(v -> {
+            Virtua virtua = virtuaRepository.findByBarcode(v.getBarcode());
+            String scanType = CORRECT;
+            if (virtua == null) {
+                scanType = BAD;
+            }
+            addToScans(new Scan(FormatDateTime.convertToLocalDateTime(v.getCreatedDate()), virtua, scanType));
+        });
     }
+
+
+////    @Override
+//    public List<ScannerData> extractBadBarcodes(List<ScannerData> barcodeList) {
+//        return barcodeList.stream()
+//                .filter(v -> {
+//                    Virtua virtua = virtuaRepository.findByBarcode(v.getBarcode());
+//                    if(virtua != null) {
+//                        addToCorrectScans(new CorrectScan(FormatDateTime.convertToLocalDateTime(v.getCreatedDate()), virtua));
+//                        return false;
+//                    }
+//                    return true;
+//                })
+//                .collect(Collectors.toList());
+//    }
+//
+////    @Override
+//    public List<BadScan> addAllToBadScans(List<ScannerData> badBarcodes) {
+//        var badScans = new ArrayList<BadScan>();
+//        for(ScannerData b : badBarcodes) {
+//            badScans.add(new BadScan(FormatDateTime.convertToLocalDateTime(b.getCreatedDate()), b.getBarcode()));
+//        }
+//        return badScans;
+//    }
 }

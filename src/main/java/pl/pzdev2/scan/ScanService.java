@@ -1,31 +1,22 @@
 package pl.pzdev2.scan;
 
 import org.springframework.stereotype.Service;
-import pl.pzdev2.scan.interfaces.BadScanRepository;
-import pl.pzdev2.scan.interfaces.CorrectScanRepository;
 import pl.pzdev2.scan.interfaces.ScanHandler;
+import pl.pzdev2.scan.interfaces.ScanRepository;
 
 import java.util.List;
 
 @Service
 public class ScanService implements ScanHandler {
 
-    private BadScanRepository badScanRepository;
-    private CorrectScanRepository correctScanRepository;
+    private ScanRepository scanRepository;
 
-    public ScanService(BadScanRepository badScanRepository, CorrectScanRepository correctScanRepository) {
-        this.badScanRepository = badScanRepository;
-        this.correctScanRepository = correctScanRepository;
+    public ScanService(ScanRepository scanRepository) {
+        this.scanRepository = scanRepository;
     }
 
     @Override
-    public void saveBadScans(List<BadScan> badScans) {
-        badScanRepository.saveAll(badScans);
+    public void saveScans(List<Scan> scans) {
+        scanRepository.saveAll(scans);
     }
-
-    @Override
-    public void saveCorrectScan(List<CorrectScan> correctScans) {
-        correctScanRepository.saveAll(correctScans);
-    }
-
 }
