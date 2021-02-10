@@ -9,6 +9,5 @@ import java.util.List;
 public interface ScannerHandler {
 
     List<ScannerData> barcodeMapping(String json) throws JsonProcessingException;
-    void makeScanList(List<ScannerData> barcodeList);
-    List<Scan> getScans();
+    List<Scan> createAListOfScans(List<ScannerData> barcodeList);
 }
