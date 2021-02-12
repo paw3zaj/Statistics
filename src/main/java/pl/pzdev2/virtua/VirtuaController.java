@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +22,8 @@ public class VirtuaController {
 
 	private static final Logger LOG = LoggerFactory.getLogger(VirtuaController.class);
 
-	private static final String URL = "http://153.19.58.250:8000/cgi-bin/27/gumed-czytczas.cgi";
+	@Value("#{systemProperties['virtua.url']}")
+	private static String URL;
 	
 	public VirtuaController(DataFetch dataFetch, VirtuaUpdateHandler virtuaUpdateHandler) {
 		this.dataFetch = dataFetch;
