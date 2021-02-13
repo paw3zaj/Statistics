@@ -34,7 +34,7 @@ public class ScannerService implements ScannerHandler {
         var objectMapper = new ObjectMapper();
         List<ScannerData> scansList = objectMapper.readValue(json, new TypeReference<>() {});
         LOG.info("Liczba wykonanych skanów: {}  przesłana na serwer: {}",
-                scansList.size(), FormatDateTime.getDateTime());
+                scansList.size(), FormatDateTime.getDateTimeAsString());
         return scansList;
     }
 
@@ -42,13 +42,17 @@ public class ScannerService implements ScannerHandler {
     public List<Scan> createAListOfScans(List<ScannerData> barcodeList) {
         scans = new LinkedList<>();
 
-        barcodeList.forEach(v -> {
-            var virtua = virtuaRepository.findByBarcode(v.getBarcode());
+        barcodeList.forEach(s -> {
+            var virtua = virtuaRepository.findByBarcode(s.getBarcode());
             var scanType = CORRECT;
             if (virtua == null) {
                 scanType = BAD;
             }
-            scans.add(new Scan(FormatDateTime.convertToLocalDateTime(v.getCreatedDate()), virtua, scanType));
+            scans.add(new Scan(
+                    virtua,
+                    scanType,
+                    FormatDateTime.getYear(s.getCreatedDate()),
+                    FormatDateTime.getMonthValue(s.getCreatedDate())));
         });
         return scans;
     }

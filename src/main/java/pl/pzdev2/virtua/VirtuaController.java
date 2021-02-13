@@ -32,21 +32,21 @@ public class VirtuaController {
 	
     @Scheduled(cron = "0 0 23 * * MON-FRI")    //weekdays at 23:00 pm
 	void booksResources() {
-		LOG.info("Start downloading data from API. {}", FormatDateTime.getDateTime());
+		LOG.info("Start downloading data from API. {}", FormatDateTime.getDateTimeAsString());
 
 		Scanner input = null;
 		try {
 			input = dataFetch.getDataFromApi(URL);
 		} catch (IOException e) {
 			e.printStackTrace();
-			LOG.info("Błąd połączenia z api Virtua. {}", FormatDateTime.getDateTime());
+			LOG.info("Błąd połączenia z api Virtua. {}", FormatDateTime.getDateTimeAsString());
 		}
 		List<Virtua> dataFromApi = virtuaUpdateHandler.convertDataFromApiToVirtua(input);
 		List<Virtua> dataFromDb = dataFetch.getDataFromDatabase();
 		List<Virtua> toUpdate = virtuaUpdateHandler.updateVirtuaDatabase(dataFromApi, dataFromDb);
 		virtuaUpdateHandler.saveChanges(toUpdate);
 
-		LOG.info("End of downloading data from API. {}", FormatDateTime.getDateTime());
+		LOG.info("End of downloading data from API. {}", FormatDateTime.getDateTimeAsString());
 	}
 
 }

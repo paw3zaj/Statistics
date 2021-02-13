@@ -36,7 +36,7 @@ public class DataFetchService implements DataFetch {
 			url = new URL(path);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
-			LOG.info("Error!!! Throws an error when passing url to object", FormatDateTime.getDateTime());
+			LOG.info("Error!!! Throws an error when passing url to object", FormatDateTime.getDateTimeAsString());
 		}
 
 //		We will be able to harness the properties of the HttpURLConnection class to validate features.
@@ -45,7 +45,7 @@ public class DataFetchService implements DataFetch {
 			conn = (HttpURLConnection) url.openConnection();
 		} catch (IOException e) {
 			e.printStackTrace();
-			LOG.info("Error!!! A connection can't be establish", FormatDateTime.getDateTime());
+			LOG.info("Error!!! A connection can't be establish", FormatDateTime.getDateTimeAsString());
 		}
 
 //		Set the request type.
@@ -53,7 +53,7 @@ public class DataFetchService implements DataFetch {
 			conn.setRequestMethod("GET");
 		} catch (ProtocolException e) {
 			e.printStackTrace();
-			LOG.info("Error!!! Can't set the request type", FormatDateTime.getDateTime());
+			LOG.info("Error!!! Can't set the request type", FormatDateTime.getDateTimeAsString());
 		}
 
 //		Open a connection stream to the corresponding API.
@@ -61,7 +61,7 @@ public class DataFetchService implements DataFetch {
 			conn.connect();
 		} catch (IOException e) {
 			e.printStackTrace();
-			LOG.info("Error!!! A connection can't be opened", FormatDateTime.getDateTime());
+			LOG.info("Error!!! A connection can't be opened", FormatDateTime.getDateTimeAsString());
 		}
 
 //		Get the corresponding response code.
@@ -70,12 +70,12 @@ public class DataFetchService implements DataFetch {
 			responsecode = conn.getResponseCode();
 		} catch (IOException e) {
 			e.printStackTrace();
-			LOG.info("Error!!! Can't Get the corresponding response code.", FormatDateTime.getDateTime());
+			LOG.info("Error!!! Can't Get the corresponding response code.", FormatDateTime.getDateTimeAsString());
 		}
 
 //		Perform a check.
         if (responsecode != 200) {
-        	LOG.info("Błąd połączenia z API Virtua!!!	{}\nHttpResponseCode: " + responsecode, FormatDateTime.getDateTime());
+        	LOG.info("Błąd połączenia z API Virtua!!!	{}\nHttpResponseCode: " + responsecode, FormatDateTime.getDateTimeAsString());
             throw new RuntimeException("HttpResponseCode: " + responsecode);
         }
 
@@ -85,7 +85,7 @@ public class DataFetchService implements DataFetch {
 			input = new Scanner(url.openStream());
 		} catch (IOException e) {
 			e.printStackTrace();
-			LOG.info("Error!!! Data can't be scanned from api", FormatDateTime.getDateTime());
+			LOG.info("Error!!! Data can't be scanned from api", FormatDateTime.getDateTimeAsString());
 		}
 
 		return input;

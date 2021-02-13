@@ -16,8 +16,7 @@ public interface ScanRepository extends JpaRepository<Scan, Long> {
 
 	@Query(value = "select count(id)" +
 			" from scan s" +
-			" where s.scan_type = 'bad' and s.year = ? and s.month = ?"
-			, nativeQuery = true)
+			" where s.scan_type = 'bad' and s.year = ? and s.month = ?", nativeQuery = true)
 	int countAllIncorrectScansForTheMonth(int year, int month);
 
 	@Query(value = "select count(id)" +
@@ -29,12 +28,6 @@ public interface ScanRepository extends JpaRepository<Scan, Long> {
 			" from scan s" +
 			" where s.scan_type = 'bad' and s.year = ?", nativeQuery = true)
 	int countAllIncorrectScansForTheYear(int year);
-
-	@Query(value = "select count(id) from scan s " +
-			"join virtua v on s.virtua_id_virtua = v.id_virtua " +
-			"where  s.year= ?1 and s.month = ?2 " +
-			"and v.barcode = ?3", nativeQuery = true)
-	int countBookScansForTheMonth(int year, int month, String barcode);
 
 	@Query(value = "select ROW_NUMBER() over (order by count(s.id) desc) as id," +
 			" v.author, v.title, count(s.id) as amount" +
@@ -51,4 +44,10 @@ public interface ScanRepository extends JpaRepository<Scan, Long> {
 			" group by v.author, v.title" +
 			" order by amount desc", nativeQuery = true)
 	List<Month> countTotalScansForTheYear(int year);
+
+	@Query(value = "select count(id) from scan s " +
+			"join virtua v on s.virtua_id_virtua = v.id_virtua " +
+			"where  s.year= ? and s.month = ? " +
+			"and v.title = ?", nativeQuery = true)
+	int countTitleScansForTheMonth(Integer year, Integer month, String title);
 }

@@ -44,7 +44,7 @@ public class VirtuaUpdateService implements VirtuaUpdateHandler {
 	                		.status(Status.IN)
 	                		.build());
 	            } catch (Exception e) {
-	                LOG.info("Scanner wyrzucił‚ błąd idVirtua: {}	{}", Long.parseLong(parts[1]), FormatDateTime.getDateTime());
+	                LOG.info("Scanner wyrzucił‚ błąd idVirtua: {}	{}", Long.parseLong(parts[1]), FormatDateTime.getDateTimeAsString());
 	                continue;
 	            }
 	        }

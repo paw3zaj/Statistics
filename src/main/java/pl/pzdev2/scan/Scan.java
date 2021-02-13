@@ -15,7 +15,6 @@ public class Scan {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private LocalDateTime createdDate;
 	@OneToOne
 	private Virtua virtua;
 	private String scanType;
@@ -25,9 +24,10 @@ public class Scan {
 	public Scan() {
 	}
 
-	public Scan(LocalDateTime createdDate, Virtua virtua, String scanType) {
-		this.createdDate = createdDate;
+	public Scan(Virtua virtua, String scanType, Integer year, Integer month) {
 		this.virtua = virtua;
 		this.scanType = scanType;
+		this.year = year;
+		this.month = month;
 	}
 }
