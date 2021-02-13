@@ -39,6 +39,7 @@ public class VirtuaController {
 			input = dataFetch.getDataFromApi(URL);
 		} catch (IOException e) {
 			e.printStackTrace();
+			LOG.info("Błąd połączenia z api Virtua. {}", FormatDateTime.getDateTime());
 		}
 		List<Virtua> dataFromApi = virtuaUpdateHandler.convertDataFromApiToVirtua(input);
 		List<Virtua> dataFromDb = dataFetch.getDataFromDatabase();

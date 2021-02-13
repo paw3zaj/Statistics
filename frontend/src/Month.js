@@ -79,6 +79,7 @@ const Month = ({
             <select value={year} onChange={e => setYear(e.currentTarget.value)}>
                 <option value='2019'>2019</option>
                 <option value='2020'>2020</option>
+                <option value='2021'>2021</option>
             </select>
             {/* </label> */}
             <button onClick={handleDownload}>pobierz</button>
