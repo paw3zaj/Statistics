@@ -16,7 +16,7 @@ public interface ScanRepository extends JpaRepository<Scan, Long> {
 
 	@Query(value = "select count(id)" +
 			" from scan s" +
-			" where s.scan_type = 'bad' and s.year = ? and s.month = ?", nativeQuery = true)
+			" where s.correct_scan = false and s.year = ? and s.month = ?", nativeQuery = true)
 	int countAllIncorrectScansForTheMonth(int year, int month);
 
 	@Query(value = "select count(id)" +
@@ -26,7 +26,7 @@ public interface ScanRepository extends JpaRepository<Scan, Long> {
 
 	@Query(value = "select count(id)" +
 			" from scan s" +
-			" where s.scan_type = 'bad' and s.year = ?", nativeQuery = true)
+			" where s.correct_scan = false and s.year = ?", nativeQuery = true)
 	int countAllIncorrectScansForTheYear(int year);
 
 	@Query(value = "select ROW_NUMBER() over (order by count(s.id) desc) as id," +
