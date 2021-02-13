@@ -1,11 +1,7 @@
 package pl.pzdev2.scan;
 
-import java.time.LocalDateTime;
-
 import javax.persistence.*;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import pl.pzdev2.virtua.Virtua;
 
 @JsonIgnoreProperties(ignoreUnknown=true)
@@ -17,17 +13,23 @@ public class Scan {
 	private Long id;
 	@OneToOne
 	private Virtua virtua;
-	private String scanType;
+	private boolean correctScan = true;
 	private Integer year;
 	private Integer month;
 
 	public Scan() {
 	}
 
-	public Scan(Virtua virtua, String scanType, Integer year, Integer month) {
+	public Scan(Virtua virtua, Integer year, Integer month) {
 		this.virtua = virtua;
-		this.scanType = scanType;
+		if(virtua == null){
+			setCorrectScan(false);
+		}
 		this.year = year;
 		this.month = month;
+	}
+
+	public void setCorrectScan(boolean correctScan) {
+		this.correctScan = correctScan;
 	}
 }

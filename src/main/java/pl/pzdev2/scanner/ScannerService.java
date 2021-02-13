@@ -20,9 +20,6 @@ public class ScannerService implements ScannerHandler {
     private VirtuaRepository virtuaRepository;
     private List<Scan> scans;
 
-    private static final String CORRECT = "correct";
-    private static final String BAD = "bad";
-
     private static final Logger LOG = LoggerFactory.getLogger(ScannerService.class);
 
     public ScannerService(VirtuaRepository virtuaRepository) {
@@ -44,13 +41,8 @@ public class ScannerService implements ScannerHandler {
 
         barcodeList.forEach(s -> {
             var virtua = virtuaRepository.findByBarcode(s.getBarcode());
-            var scanType = CORRECT;
-            if (virtua == null) {
-                scanType = BAD;
-            }
             scans.add(new Scan(
                     virtua,
-                    scanType,
                     FormatDateTime.getYear(s.getCreatedDate()),
                     FormatDateTime.getMonthValue(s.getCreatedDate())));
         });
