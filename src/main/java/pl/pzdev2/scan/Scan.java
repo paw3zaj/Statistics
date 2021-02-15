@@ -23,13 +23,9 @@ public class Scan {
 	public Scan(Virtua virtua, Integer year, Integer month) {
 		this.virtua = virtua;
 		if(virtua == null){
-			setCorrectScan(false);
+			this.correctScan = false;
 		}
 		this.year = year;
 		this.month = month;
-	}
-
-	public void setCorrectScan(boolean correctScan) {
-		this.correctScan = correctScan;
 	}
 }

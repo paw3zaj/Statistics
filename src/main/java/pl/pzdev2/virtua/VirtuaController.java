@@ -22,7 +22,7 @@ public class VirtuaController {
 
 	private static final Logger LOG = LoggerFactory.getLogger(VirtuaController.class);
 
-	@Value("#{systemProperties['virtua.url']}")
+	@Value("${virtua.url}")
 	private static String URL;
 	
 	public VirtuaController(DataFetch dataFetch, VirtuaUpdateHandler virtuaUpdateHandler) {
