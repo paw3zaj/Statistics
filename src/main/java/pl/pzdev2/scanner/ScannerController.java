@@ -27,17 +27,13 @@ public class ScannerController {
 
         Runnable task = () -> {
             try {
-                List<ScannerData> barcodeList = scannerHandler.barcodeMapping(json);
-
-                List<Scan> scans = scannerHandler.createAListOfScans(barcodeList);
-
+                List<ScannerData> barcodeListFromScanner = scannerHandler.barcodeMapping(json);
+                List<ScannerData> barcodeListAfterCompare = scannerHandler.removeDuplicateScans(barcodeListFromScanner);
+                List<Scan> scans = scannerHandler.convertToScans(barcodeListAfterCompare);
                 scanHandler.saveScans(scans);
-
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
-
-
         };
         new Thread(task).start();
 

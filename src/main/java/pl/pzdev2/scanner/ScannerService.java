@@ -40,7 +40,17 @@ public class ScannerService implements ScannerHandler {
     }
 
     @Override
-    public List<Scan> createAListOfScans(List<ScannerData> scannerDataList) {
+    public List<ScannerData> removeDuplicateScans(List<ScannerData> fromScanner) {
+
+        List<ScannerData> fromFile = readFile();
+        writeFile(fromScanner);
+        fromScanner.removeAll(fromFile);
+
+        return fromScanner;
+    }
+
+    @Override
+    public List<Scan> convertToScans(List<ScannerData> scannerDataList) {
         scans = new LinkedList<>();
 
         scannerDataList.forEach(s -> {
@@ -51,12 +61,6 @@ public class ScannerService implements ScannerHandler {
                     FormatDateTime.getMonthValue(s.getCreatedDate())));
         });
         return scans;
-    }
-
-    @Override
-    public void removeDuplicateScans(List<ScannerData> fromScanner, List<ScannerData> fromFile) {
-
-
     }
 
     private void writeFile(List<ScannerData> list) {
@@ -72,7 +76,7 @@ public class ScannerService implements ScannerHandler {
     private List<ScannerData> readFile() {
         List<ScannerData> list = null;
         try  (var in = new Scanner(
-                new FileInputStream(filePath), "UTF-8")){
+                new FileInputStream(filePath), StandardCharsets.UTF_8)){
             list = readAllScannerData(in);
         } catch (FileNotFoundException e) {
             LOG.info("Problem z odczytaniem pliku: {}", FormatDateTime.getDateTimeAsString());
