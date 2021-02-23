@@ -50,4 +50,10 @@ public interface ScanRepository extends JpaRepository<Scan, Long> {
 			"where  s.year= ? and s.month = ? " +
 			"and v.title = ?", nativeQuery = true)
 	int countTitleScansForTheMonth(Integer year, Integer month, String title);
+
+	@Query(value = "select count(id) from scan s " +
+			"join virtua v on s.virtua_id_virtua = v.id_virtua " +
+			"where  s.year= ? and s.month = ? " +
+			"and v.barcode = ?", nativeQuery = true)
+	int countBarcodeScansForTheMonth(Integer year, Integer month, String barcode);
 }
