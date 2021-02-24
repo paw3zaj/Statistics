@@ -6,7 +6,6 @@ import java.util.Scanner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +21,7 @@ public class VirtuaController {
 
 	private static final Logger LOG = LoggerFactory.getLogger(VirtuaController.class);
 
-	private static String URL = System.getenv("URL");
+	private static String URL;
 	
 	public VirtuaController(DataFetch dataFetch, VirtuaUpdateHandler virtuaUpdateHandler) {
 		this.dataFetch = dataFetch;
@@ -32,6 +31,9 @@ public class VirtuaController {
     @Scheduled(cron = "0 0 23 * * MON-FRI")    //weekdays at 23:00 pm
 	void booksResources() {
 		LOG.info("Start downloading data from API. {}", FormatDateTime.getDateTimeAsString());
+
+		URL = System.getenv("URL");
+		LOG.info("URL = {}	 {}", URL, FormatDateTime.getDateTimeAsString());
 
 		Scanner input = null;
 		try {
