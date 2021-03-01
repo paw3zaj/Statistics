@@ -9,19 +9,19 @@ import org.springframework.stereotype.Service;
 import pl.pzdev2.scan.Scan;
 import pl.pzdev2.scanner.interfaces.ScannerHandler;
 import pl.pzdev2.utility.FormatDateTime;
+import pl.pzdev2.virtua.Virtua;
 import pl.pzdev2.virtua.interfaces.VirtuaRepository;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Scanner;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Service
 public class ScannerService implements ScannerHandler {
 
     private final VirtuaRepository virtuaRepository;
-    private List<Scan> scans;
 
     private static final String filePath = "data/recentScans.dat";
     private static final Logger LOG = LoggerFactory.getLogger(ScannerService.class);
@@ -33,7 +33,8 @@ public class ScannerService implements ScannerHandler {
     @Override
     public List<ScannerData> barcodeMapping(String json) throws JsonProcessingException {
         var objectMapper = new ObjectMapper();
-        List<ScannerData> scansList = objectMapper.readValue(json, new TypeReference<>() {});
+        List<ScannerData> scansList = objectMapper.readValue(json, new TypeReference<>() {
+        });
         LOG.info("Liczba wykonanych skanów: {}  przesłana na serwer: {}",
                 scansList.size(), FormatDateTime.getDateTimeAsString());
         return scansList;
@@ -51,15 +52,25 @@ public class ScannerService implements ScannerHandler {
 
     @Override
     public List<Scan> convertToScans(List<ScannerData> scannerDataList) {
-        scans = new LinkedList<>();
 
-        scannerDataList.forEach(s -> {
-            var virtua = virtuaRepository.findByBarcode(s.getBarcode());
+        List<Scan> scans = new LinkedList<>();
+        ScannerData[] sData = convertListToTable(scannerDataList);
+
+        for(int i = 0; i < sData.length; i++) {
+            Virtua virtua = virtuaRepository.findByBarcode(sData[i].getBarcode());
+            if (virtua == null){
+                if(checkTheScans(sData[i], sData[i-1])){
+                        continue;
+                }
+                if(checkTheScans(sData[i], sData[i+1])){
+                        continue;
+                }
+            }
             scans.add(new Scan(
                     virtua,
-                    FormatDateTime.getYear(s.getCreatedDate()),
-                    FormatDateTime.getMonthValue(s.getCreatedDate())));
-        });
+                    FormatDateTime.getYear(sData[i].getCreatedDate()),
+                    FormatDateTime.getMonthValue(sData[i].getCreatedDate())));
+        }
         return scans;
     }
 
@@ -75,8 +86,8 @@ public class ScannerService implements ScannerHandler {
 
     private List<ScannerData> readFile() {
         List<ScannerData> list = null;
-        try  (var in = new Scanner(
-                new FileInputStream(filePath), StandardCharsets.UTF_8)){
+        try (var in = new Scanner(
+                new FileInputStream(filePath), StandardCharsets.UTF_8)) {
             list = readAllScannerData(in);
         } catch (FileNotFoundException e) {
             LOG.info("Problem z odczytaniem pliku: {}", FormatDateTime.getDateTimeAsString());
@@ -108,5 +119,58 @@ public class ScannerService implements ScannerHandler {
         String line = in.nextLine();
         String[] tokens = line.split("\\|");
         return new ScannerData(tokens[0], tokens[1]);
+    }
+
+    public boolean shortTimeLapse(ScannerData error, ScannerData correct) {
+
+        LocalDateTime errorTime = FormatDateTime.convertStringToLocalDateTime(error.getCreatedDate());
+        LocalDateTime correctTime = FormatDateTime.convertStringToLocalDateTime(correct.getCreatedDate());
+
+        Duration timeElapsed = Duration.between(errorTime, correctTime);
+        long second = timeElapsed.toSeconds();
+
+        if(Math.abs(second) > 1l){
+            return false;
+        }
+        return true;
+    }
+
+    public boolean compareBarcode(ScannerData error, ScannerData correct) {
+
+        char[] errBarcode = error.getBarcode().toCharArray();
+        char[] corBarcode = correct.getBarcode().toCharArray();
+
+        int counter = 0;
+
+        for (int i = 0; i < corBarcode.length; i++) {
+            if (corBarcode[i] != errBarcode[i]) {
+                counter++;
+            }
+            if (counter > 3) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean checkTheScans(ScannerData error, ScannerData correct) {
+        if(shortTimeLapse(error, correct)){
+            if(compareBarcode(error, correct)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public ScannerData[] convertListToTable(List<ScannerData> scannerDataList) {
+        int size = scannerDataList.size();
+        ScannerData[] scannerDataTable = new ScannerData[size];
+        int i = 0;
+        for (ScannerData scannerData : scannerDataList) {
+            scannerDataTable[i] = scannerData;
+            i++;
+        }
+
+        return scannerDataTable;
     }
 }
