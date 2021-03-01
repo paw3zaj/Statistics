@@ -55,15 +55,20 @@ public class ScannerService implements ScannerHandler {
 
         List<Scan> scans = new LinkedList<>();
         ScannerData[] sData = convertListToTable(scannerDataList);
+        int lenght = sData.length;
 
-        for(int i = 0; i < sData.length; i++) {
+        for(int i = 0; i < lenght; i++) {
             Virtua virtua = virtuaRepository.findByBarcode(sData[i].getBarcode());
-            if (virtua == null){
-                if(checkTheScans(sData[i], sData[i-1])){
+            if (virtua == null) {
+                if(i > 0) {
+                    if(checkTheScans(sData[i], sData[i-1])) {
                         continue;
+                    }
                 }
-                if(checkTheScans(sData[i], sData[i+1])){
+                if (i < lenght - 1) {
+                    if(checkTheScans(sData[i], sData[i+1])) {
                         continue;
+                    }
                 }
             }
             scans.add(new Scan(
