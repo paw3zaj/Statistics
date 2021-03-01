@@ -31,6 +31,8 @@ public class VirtuaController {
     @Scheduled(cron = "0 0 23 * * MON-FRI")    //weekdays at 23:00 pm
 	void booksResources() {
 		LOG.info("Start downloading data from API. {}", FormatDateTime.getDateTimeAsString());
+		URL = System.getenv("URL");
+		LOG.info("URL={}	 {}", URL, FormatDateTime.getDateTimeAsString());
 
 		URL = System.getenv("URL");
 		LOG.info("URL = {}	 {}", URL, FormatDateTime.getDateTimeAsString());
