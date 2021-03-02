@@ -23,7 +23,7 @@ public class ScannerService implements ScannerHandler {
 
     private final VirtuaRepository virtuaRepository;
 
-    private static final String filePath = "data/recentScans.dat";
+    private static final String filePath = System.getenv("filePath");
     private static final Logger LOG = LoggerFactory.getLogger(ScannerService.class);
 
     public ScannerService(VirtuaRepository virtuaRepository) {
