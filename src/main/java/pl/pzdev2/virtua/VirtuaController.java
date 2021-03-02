@@ -20,23 +20,16 @@ public class VirtuaController {
 	private final VirtuaUpdateHandler virtuaUpdateHandler;
 
 	private static final Logger LOG = LoggerFactory.getLogger(VirtuaController.class);
-
-	private static String URL;
+	private static String URL = System.getenv("URL");
 	
 	public VirtuaController(DataFetch dataFetch, VirtuaUpdateHandler virtuaUpdateHandler) {
 		this.dataFetch = dataFetch;
 		this.virtuaUpdateHandler = virtuaUpdateHandler;
 	}
-	
+
     @Scheduled(cron = "0 0 23 * * MON-FRI")    //weekdays at 23:00 pm
 	void booksResources() {
 		LOG.info("Start downloading data from API. {}", FormatDateTime.getDateTimeAsString());
-		URL = System.getenv("URL");
-		LOG.info("URL={}	 {}", URL, FormatDateTime.getDateTimeAsString());
-
-		URL = System.getenv("URL");
-		LOG.info("URL = {}	 {}", URL, FormatDateTime.getDateTimeAsString());
-
 		Scanner input = null;
 		try {
 			input = dataFetch.getDataFromApi(URL);
