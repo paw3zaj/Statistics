@@ -1,6 +1,6 @@
-package pl.pzdev2.statistics.interfaces;
+package pl.pzdev2.statistics.month;
 
-public interface Month {
+public interface MonthTable {
 
     Integer getId();
     String getAuthor();

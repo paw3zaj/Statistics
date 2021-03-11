@@ -1,9 +1,7 @@
-package pl.pzdev2.statistics;
+package pl.pzdev2.statistics.month;
 
 import org.springframework.stereotype.Service;
 import pl.pzdev2.scan.interfaces.ScanRepository;
-import pl.pzdev2.statistics.interfaces.Month;
-import pl.pzdev2.statistics.interfaces.MonthHandler;
 
 import java.util.*;
 
@@ -11,6 +9,7 @@ import java.util.*;
 public class MonthService implements MonthHandler {
 
     private ScanRepository scanRepository;
+    private Period period = new Period();
 
     public MonthService(ScanRepository scanRepository) {
         this.scanRepository = scanRepository;
@@ -33,10 +32,20 @@ public class MonthService implements MonthHandler {
     }
 
     @Override
-    public List<Month> countTotalScans(int year, int month) {
+    public List<MonthTable> countTotalScans(int year, int month) {
         if(month == 0) {
             return scanRepository.countTotalScansForTheYear(year);
         }
         return scanRepository.countTotalScansForTheMonth(year, month);
+    }
+
+    @Override
+    public Period getPeriod() {
+        return period;
+    }
+
+    @Override
+    public void setPeriod(Period period) {
+        this.period = period;
     }
 }

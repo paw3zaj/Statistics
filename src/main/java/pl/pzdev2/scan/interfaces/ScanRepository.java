@@ -3,7 +3,7 @@ package pl.pzdev2.scan.interfaces;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import pl.pzdev2.scan.Scan;
-import pl.pzdev2.statistics.interfaces.Month;
+import pl.pzdev2.statistics.month.MonthTable;
 
 import java.util.List;
 
@@ -35,7 +35,7 @@ public interface ScanRepository extends JpaRepository<Scan, Long> {
 			" where s.year = ? and s.month = ?" +
 			" group by v.author, v.title" +
 			" order by amount desc", nativeQuery = true)
-	List<Month> countTotalScansForTheMonth(int year, int month);
+	List<MonthTable> countTotalScansForTheMonth(int year, int month);
 
 	@Query(value = "select ROW_NUMBER() over (order by count(s.id) desc) as id," +
 			" v.author, v.title, count(s.id) as amount" +
@@ -43,7 +43,7 @@ public interface ScanRepository extends JpaRepository<Scan, Long> {
 			" where s.year = ?" +
 			" group by v.author, v.title" +
 			" order by amount desc", nativeQuery = true)
-	List<Month> countTotalScansForTheYear(int year);
+	List<MonthTable> countTotalScansForTheYear(int year);
 
 	@Query(value = "select count(id) from scan s " +
 			"join virtua v on s.virtua_id_virtua = v.id_virtua " +
