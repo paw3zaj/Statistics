@@ -7,11 +7,7 @@ import java.util.List;
 
 public interface UnitHandler {
 
-    Virtua findVirtuaByBarcode(String barcode);
-    int countPerMonth(int year, int month, String barcode);
-    List<VirtuaAuditLog> findVirtuaAuditLogsByIdVirtua(Long idVirtua);
-    void setVirtua(Virtua virtua);
-    Virtua getVirtua();
-    List<VirtuaAuditLog> getAuditLogs();
-    void setAuditLogs(List<VirtuaAuditLog> auditLogs);
+    Virtua findByBarcode(String barcode);
+    List<Period> countPerMonth(String barcode);
+    List<VirtuaAuditLog> findVirtuaAuditLogsByBarcode(String barcode);
 }

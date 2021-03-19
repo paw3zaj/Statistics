@@ -4,21 +4,19 @@ import org.springframework.stereotype.Service;
 import pl.pzdev2.scan.interfaces.ScanRepository;
 import pl.pzdev2.virtua.Virtua;
 import pl.pzdev2.virtua.VirtuaAuditLog;
-import pl.pzdev2.virtua.VirtuaLog;
 import pl.pzdev2.virtua.interfaces.VirtuaAuditLogRepository;
 import pl.pzdev2.virtua.interfaces.VirtuaRepository;
 
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
 @Service
 public class UnitService implements UnitHandler {
 
-    private VirtuaRepository virtuaRepository;
-    private ScanRepository scanRepository;
-    private VirtuaAuditLogRepository virtuaAuditLogRepository;
-    private Virtua virtua = new Virtua();
-    private List<VirtuaAuditLog> auditLogs = new LinkedList<>();
+    private final VirtuaRepository virtuaRepository;
+    private final ScanRepository scanRepository;
+    private final VirtuaAuditLogRepository virtuaAuditLogRepository;
 
     public UnitService(VirtuaRepository virtuaRepository,
                        ScanRepository scanRepository, VirtuaAuditLogRepository virtuaAuditLogRepository) {
@@ -28,38 +26,30 @@ public class UnitService implements UnitHandler {
     }
 
     @Override
-    public Virtua findVirtuaByBarcode(String barcode) {
+    public Virtua findByBarcode(String barcode) {
         return virtuaRepository.findByBarcode(barcode);
     }
 
     @Override
-    public int countPerMonth(int year, int month, String barcode) {
-        return scanRepository.countBarcodeScansForTheMonth(year, month, barcode);
+    public List<Period> countPerMonth(String barcode) {
+
+        var thisYear = LocalDate.now().getYear();
+        var periods = new LinkedList<Period>();
+
+        for(int y = 2020; y <= thisYear; y++){
+            var period = new Period();
+            var months = period.getMonths();
+            months[0] = y;
+            for(int m = 1; m <= 12; m++) {
+                months[m] = scanRepository.countBarcodeScansForTheMonth(y, m, barcode);
+            }
+            periods.add(period);
+        }
+        return periods;
     }
 
     @Override
-    public List<VirtuaAuditLog> findVirtuaAuditLogsByIdVirtua(Long idVirtua) {
-//        auditLogs.clear();
-//        auditLogs.addAll(virtuaAuditLogRepository.findByIdVirtua(idVirtua));
-//        return auditLogs;
-        return virtuaAuditLogRepository.findByIdVirtua(idVirtua);
-    }
-
-    @Override
-    public Virtua getVirtua() {
-        return virtua;
-    }
-    @Override
-    public void setVirtua(Virtua virtua) {
-        this.virtua = virtua;
-    }
-
-    @Override
-    public List<VirtuaAuditLog> getAuditLogs() {
-        return auditLogs;
-    }
-    @Override
-    public void setAuditLogs(List<VirtuaAuditLog> auditLogs) {
-        this.auditLogs = auditLogs;
+    public List<VirtuaAuditLog> findVirtuaAuditLogsByBarcode(String barcode) {
+        return virtuaAuditLogRepository.findByBarcode(barcode);
     }
 }

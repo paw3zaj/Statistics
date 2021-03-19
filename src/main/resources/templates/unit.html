@@ -30,64 +30,70 @@
         </div>
     </nav>
 
-        <form class="row" action="#" th:action="@{/setBarcode}" th:object="${virtua}" method="post">
+    <div class="row">
+        <form th:action="@{/unit}">
             <div class="col-md-4">
-            <div class="input-group mt-4">
-
-                <span class="input-group-text">Wpisz</span>
-                <input type="text" minlength="12" maxlength="12" pattern="[0-9]*" th:field="*{barcode}" class="form-control" placeholder="kod kreskowy...">
-                <div class="invalid-feedback">Kod kreskowy musi mieć 12 cyfr.</div>
-                <button class="btn btn-secondary" type="submit">Sprawdź</button>
+                <div class="input-group mt-4">
+                    <span class="input-group-text">Wpisz</span>
+                    <input type="text" minlength="12" maxlength="12" pattern="[0-9]*" th:name="barcode"
+                           class="form-control" placeholder="kod kreskowy..."/>
+                    <div class="invalid-feedback">Kod kreskowy musi mieć 12 cyfr.</div>
+                    <button class="btn btn-secondary" type="submit">Sprawdź</button>
                 </div>
             </div>
         </form>
+    </div>
 
     <div class="row mt-4">
         <div class="col-6">
             <h5>Dane egzemplarza</h5>
-                <ul class="list-group list-group-flush">
-                    <div class="input-group">
-                        <span class="input-group-text">Tytół </span>
-                        <li class="list-group-item" th:text="*{title}">title</li>
-                    </div>
-                    <div class="input-group">
-                        <span class="input-group-text">Autor </span>
+            <ul class="list-group list-group-flush">
+                <div class="input-group">
+                    <span class="input-group-text">Tytół </span>
+                    <li class="list-group-item" th:text="*{title}">title</li>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-text">Autor </span>
                     <li class="list-group-item" th:text="*{author}">author</li>
-                    </div>
-                    <div class="input-group">
-                        <span class="input-group-text">Kod kreskowy </span>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-text">Kod kreskowy </span>
                     <li class="list-group-item" th:text="*{barcode}">barcode</li>
-                    </div>
-                    <div class="input-group">
-                        <span class="input-group-text">Sygnatura </span>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-text">Sygnatura </span>
                     <li class="list-group-item" th:text="*{signature}">signature</li>
-                    </div>
-                    <div class="input-group">
-                        <span class="input-group-text">Data utworzenia </span>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-text">Status </span>
+                    <li class="list-group-item" th:text="*{status}">status</li>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-text">Data utworzenia </span>
                     <li class="list-group-item" th:text="*{createdDate}">createdDate</li>
-                    </div>
-                </ul>
+                </div>
+            </ul>
         </div>
         <div class="col-6">
             <h5>Historia zmian w egzemplarzu</h5>
-                <table class="table table-hover">
-                    <thead>
-                    <tr>
-                        <th th:text="#{auditLog.dataCreated}">data created</th>
-                        <th th:text="#{auditLog.property}">property</th>
-                        <th th:text="#{auditLog.oldValue}">old value</th>
-                        <th th:text="#{auditLog.newValue}">new value</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="aL : ${virtuaAuditLogs}">
-                        <td th:text="${aL.getDateCreated()}">dataCreated</td>
-                        <td th:text="${aL.getProperty()}">property</td>
-                        <td th:text="${aL.getOldValue()}">oldValue</td>
-                        <td th:text="${aL.getNewValue()}">newValue</td>
-                    </tr>
-                    </tbody>
-                </table>
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th th:text="#{auditLog.dataCreated}">data created</th>
+                    <th th:text="#{auditLog.property}">property</th>
+                    <th th:text="#{auditLog.oldValue}">old value</th>
+                    <th th:text="#{auditLog.newValue}">new value</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="aL : ${virtuaAuditLogs}">
+                    <td th:text="${aL.getDateCreated()}">dataCreated</td>
+                    <td th:text="${aL.getProperty()}">property</td>
+                    <td th:text="${aL.getOldValue()}">oldValue</td>
+                    <td th:text="${aL.getNewValue()}">newValue</td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 
@@ -130,9 +136,6 @@
             </tbody>
         </table>
     </div>
-
-
-
 
 </div>
 
