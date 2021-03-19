@@ -13,7 +13,7 @@ import java.util.List;
 @Controller
 public class MonthController {
 
-    private MonthHandler monthHandler;
+    private final MonthHandler monthHandler;
 
     public MonthController(MonthHandler monthHandler) {
         this.monthHandler = monthHandler;
@@ -29,7 +29,7 @@ public class MonthController {
         return List.of(Month.ALL);
     }
 
-        @GetMapping("/")
+    @GetMapping("/")
     public String index(@ModelAttribute Period period){
         return "index";
     }

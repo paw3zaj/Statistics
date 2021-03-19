@@ -8,7 +8,7 @@ import java.util.*;
 @Service
 public class MonthService implements MonthHandler {
 
-    private ScanRepository scanRepository;
+    private final ScanRepository scanRepository;
     private Period period = new Period();
 
     public MonthService(ScanRepository scanRepository) {
