@@ -3,10 +3,12 @@ package pl.pzdev2.statistics.unit;
 import org.springframework.stereotype.Service;
 import pl.pzdev2.scan.interfaces.ScanRepository;
 import pl.pzdev2.virtua.Virtua;
+import pl.pzdev2.virtua.VirtuaAuditLog;
 import pl.pzdev2.virtua.VirtuaLog;
-import pl.pzdev2.virtua.interfaces.VirtuaLogRepository;
+import pl.pzdev2.virtua.interfaces.VirtuaAuditLogRepository;
 import pl.pzdev2.virtua.interfaces.VirtuaRepository;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -14,14 +16,15 @@ public class UnitService implements UnitHandler {
 
     private VirtuaRepository virtuaRepository;
     private ScanRepository scanRepository;
-    private VirtuaLogRepository virtuaLogRepository;
+    private VirtuaAuditLogRepository virtuaAuditLogRepository;
+    private Virtua virtua = new Virtua();
+    private List<VirtuaAuditLog> auditLogs = new LinkedList<>();
 
     public UnitService(VirtuaRepository virtuaRepository,
-                       ScanRepository scanRepository,
-                       VirtuaLogRepository virtuaLogRepository) {
+                       ScanRepository scanRepository, VirtuaAuditLogRepository virtuaAuditLogRepository) {
         this.virtuaRepository = virtuaRepository;
         this.scanRepository = scanRepository;
-        this.virtuaLogRepository = virtuaLogRepository;
+        this.virtuaAuditLogRepository = virtuaAuditLogRepository;
     }
 
     @Override
@@ -31,11 +34,32 @@ public class UnitService implements UnitHandler {
 
     @Override
     public int countPerMonth(int year, int month, String barcode) {
-        return scanRepository.countTitleScansForTheMonth(year, month, barcode);
+        return scanRepository.countBarcodeScansForTheMonth(year, month, barcode);
     }
 
     @Override
-    public List<VirtuaLog> findVirtuaLogsByBarcode(String barcode) {
-        return virtuaLogRepository.findByBarcode(barcode);
+    public List<VirtuaAuditLog> findVirtuaAuditLogsByIdVirtua(Long idVirtua) {
+//        auditLogs.clear();
+//        auditLogs.addAll(virtuaAuditLogRepository.findByIdVirtua(idVirtua));
+//        return auditLogs;
+        return virtuaAuditLogRepository.findByIdVirtua(idVirtua);
+    }
+
+    @Override
+    public Virtua getVirtua() {
+        return virtua;
+    }
+    @Override
+    public void setVirtua(Virtua virtua) {
+        this.virtua = virtua;
+    }
+
+    @Override
+    public List<VirtuaAuditLog> getAuditLogs() {
+        return auditLogs;
+    }
+    @Override
+    public void setAuditLogs(List<VirtuaAuditLog> auditLogs) {
+        this.auditLogs = auditLogs;
     }
 }

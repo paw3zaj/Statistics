@@ -26,32 +26,113 @@
                     <a class="nav-link active" aria-current="page" href="/unit"
                        th:href="@{/unit}">Egzemplarza</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/history"
-                       th:href="@{/history}">Historia zmain w virtua</a>
-                </li>
             </ul>
         </div>
     </nav>
 
-<!--    <table class="table table-hover">-->
-<!--        <thead>-->
-<!--        <tr>-->
-<!--            <th th:text="#{month.id}">index</th>-->
-<!--            <th th:text="#{month.author}">autor</th>-->
-<!--            <th th:text="#{month.title}">tytół</th>-->
-<!--            <th th:text="#{month.amount}">ilość</th>-->
-<!--        </tr>-->
-<!--        </thead>-->
-<!--        <tbody>-->
-<!--        <tr th:each="m : ${countTotalScans}">-->
-<!--            <td th:text="${m.getId()}">id</td>-->
-<!--            <td th:text="${m.getAuthor()}">author</td>-->
-<!--            <td th:text="${m.getTitle()}">title</td>-->
-<!--            <td th:text="${m.getAmount()}">amount</td>-->
-<!--        </tr>-->
-<!--        </tbody>-->
-<!--    </table>-->
+        <form class="row" action="#" th:action="@{/setBarcode}" th:object="${virtua}" method="post">
+            <div class="col-md-4">
+            <div class="input-group mt-4">
+
+                <span class="input-group-text">Wpisz</span>
+                <input type="text" minlength="12" maxlength="12" pattern="[0-9]*" th:field="*{barcode}" class="form-control" placeholder="kod kreskowy...">
+                <div class="invalid-feedback">Kod kreskowy musi mieć 12 cyfr.</div>
+                <button class="btn btn-secondary" type="submit">Sprawdź</button>
+                </div>
+            </div>
+        </form>
+
+    <div class="row mt-4">
+        <div class="col-6">
+            <h5>Dane egzemplarza</h5>
+                <ul class="list-group list-group-flush">
+                    <div class="input-group">
+                        <span class="input-group-text">Tytół </span>
+                        <li class="list-group-item" th:text="*{title}">title</li>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text">Autor </span>
+                    <li class="list-group-item" th:text="*{author}">author</li>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text">Kod kreskowy </span>
+                    <li class="list-group-item" th:text="*{barcode}">barcode</li>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text">Sygnatura </span>
+                    <li class="list-group-item" th:text="*{signature}">signature</li>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text">Data utworzenia </span>
+                    <li class="list-group-item" th:text="*{createdDate}">createdDate</li>
+                    </div>
+                </ul>
+        </div>
+        <div class="col-6">
+            <h5>Historia zmian w egzemplarzu</h5>
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th th:text="#{auditLog.dataCreated}">data created</th>
+                        <th th:text="#{auditLog.property}">property</th>
+                        <th th:text="#{auditLog.oldValue}">old value</th>
+                        <th th:text="#{auditLog.newValue}">new value</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="aL : ${virtuaAuditLogs}">
+                        <td th:text="${aL.getDateCreated()}">dataCreated</td>
+                        <td th:text="${aL.getProperty()}">property</td>
+                        <td th:text="${aL.getOldValue()}">oldValue</td>
+                        <td th:text="${aL.getNewValue()}">newValue</td>
+                    </tr>
+                    </tbody>
+                </table>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <h5>Ilość wyporzyczeń w danym miesiącu</h5>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th th:text="#{year}">year</th>
+                <th th:text="#{month.january}">january</th>
+                <th th:text="#{month.february}">february</th>
+                <th th:text="#{month.march}">march</th>
+                <th th:text="#{month.april}">april</th>
+                <th th:text="#{month.may}">may</th>
+                <th th:text="#{month.june}">june</th>
+                <th th:text="#{month.july}">july</th>
+                <th th:text="#{month.august}">august</th>
+                <th th:text="#{month.september}">september</th>
+                <th th:text="#{month.october}">october</th>
+                <th th:text="#{month.november}">november</th>
+                <th th:text="#{month.december}">december</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="p : ${periods}">
+                <td th:text="${p.getMonth(0)}">rok</td>
+                <td th:text="${p.getMonth(1)}">rok</td>
+                <td th:text="${p.getMonth(2)}">rok</td>
+                <td th:text="${p.getMonth(3)}">rok</td>
+                <td th:text="${p.getMonth(4)}">rok</td>
+                <td th:text="${p.getMonth(5)}">rok</td>
+                <td th:text="${p.getMonth(6)}">rok</td>
+                <td th:text="${p.getMonth(7)}">rok</td>
+                <td th:text="${p.getMonth(8)}">rok</td>
+                <td th:text="${p.getMonth(9)}">rok</td>
+                <td th:text="${p.getMonth(10)}">rok</td>
+                <td th:text="${p.getMonth(11)}">rok</td>
+                <td th:text="${p.getMonth(12)}">rok</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+
 
 </div>
 
