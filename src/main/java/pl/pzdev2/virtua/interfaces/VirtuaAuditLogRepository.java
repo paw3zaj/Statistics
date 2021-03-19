@@ -7,6 +7,5 @@ import java.util.List;
 
 public interface VirtuaAuditLogRepository extends JpaRepository<VirtuaAuditLog, Long> {
 
-    List<VirtuaAuditLog> findByIdVirtua(Long idVirtua);
-//    List<VirtuaAuditLog> findByBarcode(String barcode);
+    List<VirtuaAuditLog> findByBarcode(String barcode);
 }

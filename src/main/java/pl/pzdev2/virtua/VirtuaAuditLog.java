@@ -10,7 +10,7 @@ public class VirtuaAuditLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private LocalDate dateCreated;
-    private Long idVirtua;
+    private String barcode;
     @Column(nullable = false)
     private String property;
     private String oldValue;
@@ -19,9 +19,9 @@ public class VirtuaAuditLog {
     public VirtuaAuditLog() {
     }
 
-    public VirtuaAuditLog(LocalDate dateCreated, Long idVirtua, String property, String oldValue, String newValue) {
+    public VirtuaAuditLog(LocalDate dateCreated, String barcode, String property, String oldValue, String newValue) {
         this.dateCreated = dateCreated;
-        this.idVirtua = idVirtua;
+        this.barcode = barcode;
         this.property = property;
         this.oldValue = oldValue;
         this.newValue = newValue;
