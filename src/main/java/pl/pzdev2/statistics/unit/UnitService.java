@@ -1,8 +1,7 @@
-package pl.pzdev2.statistics;
+package pl.pzdev2.statistics.unit;
 
 import org.springframework.stereotype.Service;
 import pl.pzdev2.scan.interfaces.ScanRepository;
-import pl.pzdev2.statistics.interfaces.ItemHandler;
 import pl.pzdev2.virtua.Virtua;
 import pl.pzdev2.virtua.VirtuaLog;
 import pl.pzdev2.virtua.interfaces.VirtuaLogRepository;
@@ -11,13 +10,13 @@ import pl.pzdev2.virtua.interfaces.VirtuaRepository;
 import java.util.List;
 
 @Service
-public class ItemService implements ItemHandler {
+public class UnitService implements UnitHandler {
 
     private VirtuaRepository virtuaRepository;
     private ScanRepository scanRepository;
     private VirtuaLogRepository virtuaLogRepository;
 
-    public ItemService(VirtuaRepository virtuaRepository,
+    public UnitService(VirtuaRepository virtuaRepository,
                        ScanRepository scanRepository,
                        VirtuaLogRepository virtuaLogRepository) {
         this.virtuaRepository = virtuaRepository;
