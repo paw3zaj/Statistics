@@ -9,7 +9,6 @@ import java.util.*;
 public class MonthService implements MonthHandler {
 
     private final ScanRepository scanRepository;
-    private Period period = new Period();
 
     public MonthService(ScanRepository scanRepository) {
         this.scanRepository = scanRepository;
@@ -37,15 +36,5 @@ public class MonthService implements MonthHandler {
             return scanRepository.countTotalScansForTheYear(year);
         }
         return scanRepository.countTotalScansForTheMonth(year, month);
-    }
-
-    @Override
-    public Period getPeriod() {
-        return period;
-    }
-
-    @Override
-    public void setPeriod(Period period) {
-        this.period = period;
     }
 }

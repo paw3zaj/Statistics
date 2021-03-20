@@ -29,31 +29,23 @@ public class MonthController {
         return List.of(Month.ALL);
     }
 
-    @GetMapping("/")
+    @GetMapping({"/","/month"})
     public String index(@ModelAttribute Period period){
         return "index";
     }
 
-    @GetMapping("/month")
-    public String month(Model model) {
+    @PostMapping("/month")
+    public String chosePeriod(final Period period, BindingResult bindingResult, Model model) {
+        if(bindingResult.hasErrors()){
+            return "redirect:/";
+        }
 
-        var period = monthHandler.getPeriod();
         var year = period.getYear();
         var month = period.getMonth().getValue();
 
-        model.addAttribute("period", period);
         model.addAttribute("countAllScans", monthHandler.countAllScans(year, month));
         model.addAttribute("countAllBadScans", monthHandler.countAllIncorrectScans(year, month));
         model.addAttribute("countTotalScans", monthHandler.countTotalScans(year, month));
         return "index";
-    }
-
-    @PostMapping("/setPeriod")
-    public String chosePeriod(final Period period, BindingResult bindingResult) {
-        if(bindingResult.hasErrors()){
-            return "index";
-        }
-        monthHandler.setPeriod(period);
-        return "redirect:/month";
     }
 }
