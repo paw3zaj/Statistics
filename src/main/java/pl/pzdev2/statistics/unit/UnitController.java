@@ -1,15 +1,19 @@
 package pl.pzdev2.statistics.unit;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import pl.pzdev2.utility.FormatDateTime;
 import pl.pzdev2.virtua.Virtua;
 
 @Controller
 public class UnitController {
 
     private final UnitHandler unitHandler;
+    private static final Logger LOG = LoggerFactory.getLogger(UnitController.class);
 
     public UnitController(UnitHandler unitHandler) {
         this.unitHandler = unitHandler;
@@ -21,9 +25,13 @@ public class UnitController {
 
         Virtua virtua = null;
 
-        if(!barcode.equals("")) {
+        try {
             virtua = unitHandler.findByBarcode(barcode);
+        } catch (Exception e) {
+            LOG.info("Pusty String jako barcode. {}", FormatDateTime.getDateTimeAsString());
+            e.printStackTrace();
         }
+
 
         if(virtua != null) {
 
