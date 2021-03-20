@@ -1,7 +1,7 @@
 package pl.pzdev2.scanner;
 
 import org.springframework.stereotype.Component;
-import pl.pzdev2.utility.FormatDateTime;
+import pl.pzdev2.utility.DateTimeUtility;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -17,8 +17,8 @@ public class BarcodeComparator {
     }
     public boolean shortTimeLapse(ScannerData error, ScannerData correct) {
 
-        LocalDateTime errorTime = FormatDateTime.convertStringToLocalDateTime(error.getCreatedDate());
-        LocalDateTime correctTime = FormatDateTime.convertStringToLocalDateTime(correct.getCreatedDate());
+        LocalDateTime errorTime = DateTimeUtility.convertStringToLocalDateTime(error.getCreatedDate());
+        LocalDateTime correctTime = DateTimeUtility.convertStringToLocalDateTime(correct.getCreatedDate());
 
         Duration timeElapsed = Duration.between(errorTime, correctTime);
         long second = timeElapsed.toSeconds();

@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import pl.pzdev2.utility.FormatDateTime;
+import pl.pzdev2.utility.DateTimeUtility;
 import pl.pzdev2.virtua.interfaces.DataFetch;
 import pl.pzdev2.virtua.interfaces.VirtuaUpdateHandler;
 
@@ -29,20 +29,20 @@ public class VirtuaController {
 
     @Scheduled(cron = "0 0 23 * * MON-FRI")    //weekdays at 23:00 pm
 	void booksResources() {
-		LOG.info("Start downloading data from API. {}", FormatDateTime.getDateTimeAsString());
+		LOG.info("Start downloading data from API. {}", DateTimeUtility.getDateTimeAsString());
 		Scanner input = null;
 		try {
 			input = dataFetch.getDataFromApi(URL);
 		} catch (IOException e) {
 			e.printStackTrace();
-			LOG.info("Błąd połączenia z api Virtua. {}", FormatDateTime.getDateTimeAsString());
+			LOG.info("Błąd połączenia z api Virtua. {}", DateTimeUtility.getDateTimeAsString());
 		}
 		List<Virtua> dataFromApi = virtuaUpdateHandler.convertDataFromApiToVirtua(input);
 		List<Virtua> dataFromDb = dataFetch.getDataFromDatabase();
 		List<Virtua> toUpdate = virtuaUpdateHandler.updateVirtuaDatabase(dataFromApi, dataFromDb);
 		virtuaUpdateHandler.saveChanges(toUpdate);
 
-		LOG.info("End of downloading data from API. {}", FormatDateTime.getDateTimeAsString());
+		LOG.info("End of downloading data from API. {}", DateTimeUtility.getDateTimeAsString());
 	}
 
 }

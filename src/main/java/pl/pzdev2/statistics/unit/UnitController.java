@@ -6,7 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import pl.pzdev2.utility.FormatDateTime;
+import pl.pzdev2.utility.DateTimeUtility;
 import pl.pzdev2.virtua.Virtua;
 
 @Controller
@@ -28,7 +28,7 @@ public class UnitController {
         try {
             virtua = unitHandler.findByBarcode(barcode);
         } catch (Exception e) {
-            LOG.info("Pusty String jako barcode. {}", FormatDateTime.getDateTimeAsString());
+            LOG.info("Pusty String jako barcode. {}", DateTimeUtility.getDateTimeAsString());
             e.printStackTrace();
         }
 

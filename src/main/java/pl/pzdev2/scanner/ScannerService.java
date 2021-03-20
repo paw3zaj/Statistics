@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import pl.pzdev2.scan.Scan;
 import pl.pzdev2.scanner.interfaces.ScannerHandler;
-import pl.pzdev2.utility.FormatDateTime;
+import pl.pzdev2.utility.DateTimeUtility;
 import pl.pzdev2.virtua.Virtua;
 import pl.pzdev2.virtua.interfaces.VirtuaRepository;
 
@@ -36,7 +36,7 @@ public class ScannerService implements ScannerHandler {
         List<ScannerData> scansList = objectMapper.readValue(json, new TypeReference<>() {
         });
         LOG.info("Liczba wykonanych skanów: {}  przesłana na serwer: {}",
-                scansList.size(), FormatDateTime.getDateTimeAsString());
+                scansList.size(), DateTimeUtility.getDateTimeAsString());
         return scansList;
     }
 
@@ -73,8 +73,8 @@ public class ScannerService implements ScannerHandler {
             }
             scans.add(new Scan(
                     virtua,
-                    FormatDateTime.getYear(sData[i].getCreatedDate()),
-                    FormatDateTime.getMonthValue(sData[i].getCreatedDate())));
+                    DateTimeUtility.getYear(sData[i].getCreatedDate()),
+                    DateTimeUtility.getMonthValue(sData[i].getCreatedDate())));
         }
         return scans;
     }

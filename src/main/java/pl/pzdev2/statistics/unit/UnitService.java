@@ -2,12 +2,12 @@ package pl.pzdev2.statistics.unit;
 
 import org.springframework.stereotype.Service;
 import pl.pzdev2.scan.interfaces.ScanRepository;
+import pl.pzdev2.utility.DateTimeUtility;
 import pl.pzdev2.virtua.Virtua;
 import pl.pzdev2.virtua.VirtuaAuditLog;
 import pl.pzdev2.virtua.interfaces.VirtuaAuditLogRepository;
 import pl.pzdev2.virtua.interfaces.VirtuaRepository;
 
-import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -33,7 +33,7 @@ public class UnitService implements UnitHandler {
     @Override
     public List<Period> countPerMonth(String barcode) {
 
-        var thisYear = LocalDate.now().getYear();
+        var thisYear = DateTimeUtility.getTheCurrentYear();
         var periods = new LinkedList<Period>();
 
         for(int y = 2020; y <= thisYear; y++){

@@ -6,7 +6,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import pl.pzdev2.statistics.UtilityService;
+import pl.pzdev2.utility.DateTimeUtility;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class MonthController {
 
     @ModelAttribute("allYears")
     public List<Integer> allYears() {
-        return UtilityService.getYears();
+        return DateTimeUtility.getYears();
     }
 
     @ModelAttribute("allMonths")

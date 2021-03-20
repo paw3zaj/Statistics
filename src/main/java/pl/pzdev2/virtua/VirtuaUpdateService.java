@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import pl.pzdev2.utility.FormatDateTime;
+import pl.pzdev2.utility.DateTimeUtility;
 import pl.pzdev2.virtua.interfaces.VirtuaRepository;
 import pl.pzdev2.virtua.interfaces.VirtuaUpdateHandler;
 
@@ -44,8 +44,7 @@ public class VirtuaUpdateService implements VirtuaUpdateHandler {
 	                		.status(Status.IN)
 	                		.build());
 	            } catch (Exception e) {
-	                LOG.info("Scanner wyrzucił‚ błąd idVirtua: {}	{}", Long.parseLong(parts[1]), FormatDateTime.getDateTimeAsString());
-	                continue;
+	                LOG.info("Scanner wyrzucił‚ błąd idVirtua: {}	{}", Long.parseLong(parts[1]), DateTimeUtility.getDateTimeAsString());
 	            }
 	        }
 	        
@@ -109,7 +108,7 @@ public class VirtuaUpdateService implements VirtuaUpdateHandler {
 
 	 List<Long> idSeparate(List<Virtua> virtuaList) {
 		 return virtuaList.stream()
-				 .map(v -> v.getIdVirtua())
+				 .map(Virtua::getIdVirtua)
 				 .collect(Collectors.toList());
 	 }
 	 

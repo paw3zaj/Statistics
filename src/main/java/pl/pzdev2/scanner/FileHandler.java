@@ -3,7 +3,7 @@ package pl.pzdev2.scanner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import pl.pzdev2.utility.FormatDateTime;
+import pl.pzdev2.utility.DateTimeUtility;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -25,7 +25,7 @@ public class FileHandler {
                 filePath, StandardCharsets.UTF_8)) {
             writeAllScannerData(list, out);
         } catch (IOException e) {
-            LOG.info("Problem z zapisem do pliku: {}", FormatDateTime.getDateTimeAsString());
+            LOG.info("Problem z zapisem do pliku: {}", DateTimeUtility.getDateTimeAsString());
             e.printStackTrace();
         }
     }
@@ -36,7 +36,7 @@ public class FileHandler {
                 new FileInputStream(filePath), StandardCharsets.UTF_8)) {
             list = readAllScannerData(in);
         } catch (FileNotFoundException e) {
-            LOG.info("Problem z odczytaniem pliku: {}", FormatDateTime.getDateTimeAsString());
+            LOG.info("Problem z odczytaniem pliku: {}", DateTimeUtility.getDateTimeAsString());
             e.printStackTrace();
         }
         return list;

@@ -1,9 +1,12 @@
 package pl.pzdev2.utility;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.LinkedList;
+import java.util.List;
 
-public class FormatDateTime {
+public class DateTimeUtility {
 	
 	private static final String DATE_FORMATTER = "yyyy-MM-dd HH:mm:ss";
 
@@ -24,5 +27,20 @@ public class FormatDateTime {
 
 	public static Integer getMonthValue(String createdDate) {
 		return convertStringToLocalDateTime(createdDate).getMonthValue();
+	}
+
+	public static int getTheCurrentYear() {
+		return LocalDate.now().getYear();
+	}
+
+	public static List<Integer> getYears() {
+		List<Integer> years = new LinkedList<>();
+		LocalDate today = LocalDate.now();
+		int year = today.getYear();
+
+		for (int i = 2020; i <= year; i++) {
+			years.add(i);
+		}
+		return years;
 	}
 }

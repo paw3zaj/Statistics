@@ -12,14 +12,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import pl.pzdev2.utility.FormatDateTime;
+import pl.pzdev2.utility.DateTimeUtility;
 import pl.pzdev2.virtua.interfaces.DataFetch;
 import pl.pzdev2.virtua.interfaces.VirtuaRepository;
 
 @Service
 public class DataFetchService implements DataFetch {
 	
-	private VirtuaRepository virtuaRepository;
+	private final VirtuaRepository virtuaRepository;
 	
 	private static final Logger LOG = LoggerFactory.getLogger(DataFetchService.class);
 
@@ -36,46 +36,54 @@ public class DataFetchService implements DataFetch {
 			url = new URL(path);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
-			LOG.info("Error!!! Throws an error when passing url to object", FormatDateTime.getDateTimeAsString());
+			LOG.info("Error!!! Throws an error when passing url to object {}", DateTimeUtility.getDateTimeAsString());
 		}
 
 //		We will be able to harness the properties of the HttpURLConnection class to validate features.
 		HttpURLConnection conn = null;
 		try {
-			conn = (HttpURLConnection) url.openConnection();
+			if (url != null) {
+				conn = (HttpURLConnection) url.openConnection();
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
-			LOG.info("Error!!! A connection can't be establish", FormatDateTime.getDateTimeAsString());
+			LOG.info("Error!!! A connection can't be establish {}", DateTimeUtility.getDateTimeAsString());
 		}
 
 //		Set the request type.
 		try {
-			conn.setRequestMethod("GET");
+			if (conn != null) {
+				conn.setRequestMethod("GET");
+			}
 		} catch (ProtocolException e) {
 			e.printStackTrace();
-			LOG.info("Error!!! Can't set the request type", FormatDateTime.getDateTimeAsString());
+			LOG.info("Error!!! Can't set the request type {}", DateTimeUtility.getDateTimeAsString());
 		}
 
 //		Open a connection stream to the corresponding API.
 		try {
-			conn.connect();
+			if (conn != null) {
+				conn.connect();
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
-			LOG.info("Error!!! A connection can't be opened", FormatDateTime.getDateTimeAsString());
+			LOG.info("Error!!! A connection can't be opened {}", DateTimeUtility.getDateTimeAsString());
 		}
 
 //		Get the corresponding response code.
 		int responsecode = 0;
 		try {
-			responsecode = conn.getResponseCode();
+			if (conn != null) {
+				responsecode = conn.getResponseCode();
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
-			LOG.info("Error!!! Can't Get the corresponding response code.", FormatDateTime.getDateTimeAsString());
+			LOG.info("Error!!! Can't Get the corresponding response code. {}", DateTimeUtility.getDateTimeAsString());
 		}
 
 //		Perform a check.
         if (responsecode != 200) {
-        	LOG.info("Błąd połączenia z API Virtua!!!	{}\nHttpResponseCode: " + responsecode, FormatDateTime.getDateTimeAsString());
+        	LOG.info("Błąd połączenia z API Virtua!!!	{}\nHttpResponseCode: " + responsecode, DateTimeUtility.getDateTimeAsString());
             throw new RuntimeException("HttpResponseCode: " + responsecode);
         }
 
@@ -85,7 +93,7 @@ public class DataFetchService implements DataFetch {
 			input = new Scanner(url.openStream());
 		} catch (IOException e) {
 			e.printStackTrace();
-			LOG.info("Error!!! Data can't be scanned from api", FormatDateTime.getDateTimeAsString());
+			LOG.info("Error!!! Data can't be scanned from api {}", DateTimeUtility.getDateTimeAsString());
 		}
 
 		return input;
