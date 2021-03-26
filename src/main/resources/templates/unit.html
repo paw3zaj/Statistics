@@ -34,11 +34,11 @@
         <form th:action="@{/unit}">
             <div class="col-md-4">
                 <div class="input-group mt-4">
-                    <span class="input-group-text">Wpisz</span>
+                    <span class="input-group-text"><strong>Wpisz</strong></span>
                     <input type="text" minlength="12" maxlength="12" pattern="[0-9]*" th:name="barcode"
-                           class="form-control" placeholder="kod kreskowy..."/>
+                           class="form-control" placeholder="kod kreskowy"/>
                     <div class="invalid-feedback">Kod kreskowy musi mieć 12 cyfr.</div>
-                    <button class="btn btn-secondary" type="submit">Sprawdź</button>
+                    <button class="btn btn-primary" type="submit">Sprawdź</button>
                 </div>
             </div>
         </form>
@@ -47,32 +47,56 @@
     <div class="row mt-4">
         <div class="col-6">
             <h5>Dane egzemplarza</h5>
-            <ul class="list-group list-group-flush">
-                <div class="input-group">
-                    <span class="input-group-text">Tytół </span>
-                    <li class="list-group-item" th:text="*{title}">title</li>
+            <div th:object="${virtua}">
+                <div class="row mt-1">
+                    <div class="col-6">
+                        <span class="input-group-text"><strong>Tytół</strong></span>
+                    </div>
+                    <div class="col-6">
+                        <p th:text="*{getTitle()}"></p>
+                    </div>
                 </div>
-                <div class="input-group">
-                    <span class="input-group-text">Autor </span>
-                    <li class="list-group-item" th:text="*{author}">author</li>
+                <div class="row mt-1">
+                    <div class="col-6">
+                        <span class="input-group-text"><strong>Autor</strong></span>
+                    </div>
+                    <div class="col-6">
+                        <p th:text="*{getAuthor()}"></p>
+                    </div>
                 </div>
-                <div class="input-group">
-                    <span class="input-group-text">Kod kreskowy </span>
-                    <li class="list-group-item" th:text="*{barcode}">barcode</li>
+                <div class="row mt-1">
+                    <div class="col-6">
+                        <span class="input-group-text"><strong>Kod kreskowy</strong></span>
+                    </div>
+                    <div class="col-6">
+                        <p th:text="*{getBarcode()}"></p>
+                    </div>
                 </div>
-                <div class="input-group">
-                    <span class="input-group-text">Sygnatura </span>
-                    <li class="list-group-item" th:text="*{signature}">signature</li>
+                <div class="row mt-1">
+                    <div class="col-6">
+                        <span class="input-group-text"><strong>Sygnatura</strong></span>
+                    </div>
+                    <div class="col-6">
+                        <p th:text="*{getSignature()}"></p>
+                    </div>
                 </div>
-                <div class="input-group">
-                    <span class="input-group-text">Status </span>
-                    <li class="list-group-item" th:text="*{status}">status</li>
+                <div class="row mt-1">
+                    <div class="col-6">
+                        <span class="input-group-text"><strong>Status</strong></span>
+                    </div>
+                    <div class="col-6">
+                        <p th:text="*{getStatusValue()}"></p>
+                    </div>
                 </div>
-                <div class="input-group">
-                    <span class="input-group-text">Data utworzenia </span>
-                    <li class="list-group-item" th:text="*{createdDate}">createdDate</li>
+                <div class="row mt-1">
+                    <div class="col-6">
+                        <span class="input-group-text"><strong>Data dodania</strong></span>
+                    </div>
+                    <div class="col-6">
+                        <p th:text="*{getCreatedDate()}"></p>
+                    </div>
                 </div>
-            </ul>
+            </div>
         </div>
         <div class="col-6">
             <h5>Historia zmian w egzemplarzu</h5>

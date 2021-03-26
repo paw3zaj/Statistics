@@ -33,8 +33,8 @@ public class UnitService implements UnitHandler {
     @Override
     public List<Period> countPerMonth(String barcode) {
 
-        var thisYear = DateTimeUtility.getTheCurrentYear();
         var periods = new LinkedList<Period>();
+        var thisYear = DateTimeUtility.getTheCurrentYear();
 
         for(int y = 2020; y <= thisYear; y++){
             var period = new Period();
