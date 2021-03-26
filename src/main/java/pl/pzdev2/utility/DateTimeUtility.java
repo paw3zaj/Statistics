@@ -34,11 +34,10 @@ public class DateTimeUtility {
 	}
 
 	public static List<Integer> getYears() {
-		List<Integer> years = new LinkedList<>();
-		LocalDate today = LocalDate.now();
-		int year = today.getYear();
+		var years = new LinkedList<Integer>();
+		var thisYear = getTheCurrentYear();
 
-		for (int i = 2020; i <= year; i++) {
+		for (int i = 2020; i <= thisYear; i++) {
 			years.add(i);
 		}
 		return years;
