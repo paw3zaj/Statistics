@@ -17,7 +17,7 @@ import pl.pzdev2.virtua.interfaces.VirtuaUpdateHandler;
 @Service
 public class VirtuaUpdateService implements VirtuaUpdateHandler {
 
-	private VirtuaRepository virtuaRepository;
+	private final VirtuaRepository virtuaRepository;
 	
 	private static final Logger LOG = LoggerFactory.getLogger(VirtuaUpdateService.class);
 	

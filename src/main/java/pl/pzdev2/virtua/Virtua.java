@@ -2,10 +2,7 @@ package pl.pzdev2.virtua;
 
 import java.time.LocalDate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -34,7 +31,16 @@ public class Virtua {
 	private String title;
     private LocalDate createdDate;
 	private Status status;
-	
+	@Transient
+	private String statusValue;
+
+	public void setStatusValue() {
+		this.statusValue = this.status.getValue();
+	}
+
+	public String getStatusValue() {
+		return statusValue;
+	}
 
 	@Override
 	public String toString() {
@@ -93,10 +99,7 @@ public class Virtua {
 		if (status != other.status)
 			return false;
 		if (title == null) {
-			if (other.title != null)
-				return false;
-		} else if (!title.equals(other.title))
-			return false;
-		return true;
+			return other.title == null;
+		} else return title.equals(other.title);
 	}
 }
