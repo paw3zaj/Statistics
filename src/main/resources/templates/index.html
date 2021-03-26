@@ -64,7 +64,7 @@
         </thead>
         <tbody>
         <tr th:each="m : ${countTotalScans}">
-            <td th:text="${m.getId()}">id</td>
+            <td th:text="${mStat.count}">id</td>
             <td th:text="${m.getAuthor()}">author</td>
             <td th:text="${m.getTitle()}">title</td>
             <td th:text="${m.getAmount()}">amount</td>

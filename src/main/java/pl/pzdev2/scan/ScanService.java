@@ -9,7 +9,7 @@ import java.util.List;
 @Service
 public class ScanService implements ScanHandler {
 
-    private ScanRepository scanRepository;
+    private final ScanRepository scanRepository;
 
     public ScanService(ScanRepository scanRepository) {
         this.scanRepository = scanRepository;
